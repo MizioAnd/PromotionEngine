@@ -21,9 +21,10 @@ public class Tests
     [Test]
     public void TestTotalPrice()
     {
-        string[] stockKeepingUnits = {"A", "B", "A", "B"};
+        // SKUs {"A", "B", "A", "B"}
+        IEnumerable<int> counts = new List<int>{2, 2, 0, 0};
         int expectedTotal = 45 + 2*50;
-        int totalPrice = stockKeepingUnits.TotalPrice();
+        int totalPrice = counts.TotalPrice();
         bool result = expectedTotal == totalPrice;
         Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
         // Assert.Pass();
