@@ -8,28 +8,29 @@ public static class PromotionEngineLibrary
     private static int _priceC = 20;
     private static int _priceD = 15;
 
-    public static IEnumerable<int> CountSKU(this IEnumerable<string>? str)
+    public static IEnumerable<int> CountSKU(this IEnumerable<string>? sku)
     {
-        IEnumerable<int> counts = new List<int>{2, 0, 2, 0};
+        IList<int> counts = new List<int>{0, 0, 0, 0};
+
+        foreach(string i in sku)
+        {
+            switch(i)
+            {
+                case "A":
+                    counts[0] += 1;
+                    break;
+                case "B":
+                    counts[1] += 1;
+                    break;
+                case "C":
+                    counts[2] += 1;
+                    break;
+                case "D":
+                    counts[3] += 1;
+                    break;
+            }
+        }
         return counts;
-        // foreach(string i in str)
-        // {
-        //     switch(i)
-        //     {
-        //         case i.Equals("A"):
-        //             counts[0] += 1;
-        //             break;
-        //         case i.Equals("B"):
-        //             counts[1] += 1;
-        //             break;
-        //         case i.Equals("C"):
-        //             counts[2] += 1;
-        //             break;
-        //         case i.Equals("D"):
-        //             counts[3] += 1;
-        //             break;
-        //     }
-        // }
     }
 
     public static int TotalPrice(this IEnumerable<string>? str)
