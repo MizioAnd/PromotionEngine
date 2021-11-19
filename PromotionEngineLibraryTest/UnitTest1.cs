@@ -41,5 +41,36 @@ public class Tests
         Assert.IsTrue(result, String.Format("Expected counts '{0}': true, but actual counts '{1}': {2}", String.Join(",", expected), String.Join(",", counts), result));
     }
 
+    [Test]
+    public void TestScenarioA()
+    {
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "B", "C"};
+        var counts = stockKeepingUnits.CountSKU();
+        int expectedTotal = PromotionEngineLibrary.PriceA + PromotionEngineLibrary.PriceB + PromotionEngineLibrary.PriceC;
+        int totalPrice = counts.TotalPrice();
+        bool result = expectedTotal == totalPrice & expectedTotal == 100;
+        Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
+    }
 
+    [Test]
+    public void TestScenarioB()
+    {
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "C"};
+        var counts = stockKeepingUnits.CountSKU();
+        int expectedTotal = 5*PromotionEngineLibrary.PriceA + 5*PromotionEngineLibrary.PriceB + PromotionEngineLibrary.PriceC - PromotionEngineLibrary.Promotion3AsSaving - 2*PromotionEngineLibrary.Promotion2BsSaving;
+        int totalPrice = counts.TotalPrice();
+        bool result = expectedTotal == totalPrice & expectedTotal == 370;
+        Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
+    }
+
+    [Test]
+    public void TestScenarioC()
+    {
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
+        var counts = stockKeepingUnits.CountSKU();
+        int expectedTotal = 3*PromotionEngineLibrary.PriceA + 5*PromotionEngineLibrary.PriceB + PromotionEngineLibrary.PriceC + PromotionEngineLibrary.PriceD - PromotionEngineLibrary.Promotion3AsSaving - 2*PromotionEngineLibrary.Promotion2BsSaving - PromotionEngineLibrary.PromotionCandDSaving;
+        int totalPrice = counts.TotalPrice();
+        bool result = expectedTotal == totalPrice & expectedTotal == 280;
+        Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
+    }
 }
