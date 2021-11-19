@@ -23,7 +23,8 @@ public class Tests
     {
         // SKUs {"A", "B", "A", "B"}
         IEnumerable<int> counts = new List<int>{2, 2, 0, 0};
-        int expectedTotal = 45 + 2*50;
+        // int expectedTotal = 45 + 2*50;
+        int expectedTotal = 2*PromotionEngineLibrary.PriceA + 2*PromotionEngineLibrary.PriceB - PromotionEngineLibrary.Promotion2BsSaving;
         int totalPrice = counts.TotalPrice();
         bool result = expectedTotal == totalPrice;
         Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));

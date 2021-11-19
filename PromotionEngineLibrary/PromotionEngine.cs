@@ -3,10 +3,20 @@
 namespace Promotion.Engine.Library;
 public static class PromotionEngineLibrary
 {
-    private static int _priceA = 50;
-    private static int _priceB = 30;
-    private static int _priceC = 20;
-    private static int _priceD = 15;
+    public static int PriceA => 50;
+    public static int PriceB => 30;
+    public static int PriceC => 20;
+    public static int PriceD => 15;
+
+    public static int Promotion3As => 130;
+    public static int Promotion3AsSaving => PriceA*3 - 130;
+    
+    public static int Promotion2Bs => 45;
+    public static int Promotion2BsSaving => PriceB*2 - 45;
+    
+    public static int PromotionCandD => 30;
+    public static int PromotionCandDSaving => PriceC + PriceD - 30;
+
 
     public static IEnumerable<int> CountSKU(this IEnumerable<string>? sku)
     {
@@ -33,12 +43,10 @@ public static class PromotionEngineLibrary
         return counts;
     }
 
-    public static int TotalPrice(this IEnumerable<string>? str)
+    public static int TotalPrice(this IEnumerable<int>? str)
     {
-        if (str.Contains("A"))
-            return 50;
-        else
-            return 0;
-    }
+        int priceWithoutPromotion = 0;
 
+        return 0;
+    }
 }
