@@ -1,6 +1,8 @@
 # PromotionEngine
 A simple promotion engine for a checkout process
 
+Prerequisites: .NET 6 SDK and VS Code.
+
 Create new solution,
 
 $ dotnet new sln
