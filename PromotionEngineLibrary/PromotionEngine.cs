@@ -67,4 +67,15 @@ public static class PromotionEngineLibrary
 
         return priceWithoutPromotion - totalPromotionSaving;
     }
+
+    public static void CreatePromotion2ItemsForFixedPrice(this List<PromotionRule>? PromotionRules, string item_i, string item_j, int price)
+    {
+        PromotionRule promotionRule = new PromotionRule(item_i, item_j, price);
+        PromotionRules.Add(promotionRule);
+    }
+
+    public static int TotalPriceUsingPromotionRules(this IEnumerable<int>? counts)
+    {
+        return 0;
+    }
 }

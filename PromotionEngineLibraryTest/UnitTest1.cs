@@ -73,4 +73,20 @@ public class Tests
         bool result = expectedTotal == totalPrice & expectedTotal == 280;
         Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
     }
+
+    [Test]
+    public void TestCreatePromotion2ItemsForFixedPrice()
+    {
+        // Todo: Rules should then be created that gets included in the engine.
+        // adds promotion to a collection of promotion rules
+        int price = 30;
+        string item_i = "C";
+        string item_j = "D";
+        List<string> expected = new List<string>{item_i, item_j, price.ToString()};
+        List<PromotionRule> PromotionRules = new List<PromotionRule>();
+        PromotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
+        var promotionRule = PromotionRules.ElementAt(0);
+        bool result = promotionRule.Item_j.Equals(item_j) & promotionRule.Item_j.Equals(item_j) & promotionRule.Price.Equals(price);
+        Assert.IsTrue(result, String.Format("Expected item '{0}': true, but actual item '{1}': {2}", String.Join(",", expected), promotionRule.PrintRule, result));
+    }
 }
