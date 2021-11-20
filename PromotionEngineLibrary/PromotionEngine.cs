@@ -74,7 +74,7 @@ public static class PromotionEngineLibrary
         PromotionRules.Add(promotionRule);
     }
 
-    public static int TotalPriceUsingPromotionRules(this IEnumerable<int>? counts)
+    public static int TotalPriceUsingPromotionRules(this IEnumerable<int>? counts, IEnumerable<PromotionRule> promotionRules)
     {
         return 0;
     }

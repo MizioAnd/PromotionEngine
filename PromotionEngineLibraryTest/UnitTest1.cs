@@ -89,4 +89,26 @@ public class Tests
         bool result = promotionRule.Item_j.Equals(item_j) & promotionRule.Item_j.Equals(item_j) & promotionRule.Price.Equals(price);
         Assert.IsTrue(result, String.Format("Expected item '{0}': true, but actual item '{1}': {2}", String.Join(",", expected), promotionRule.PrintRule, result));
     }
+
+    [Test]
+    public void TestTotalPriceUsingPromotionRules()
+    {
+        // Todo: test that correct total price gets outputed after one promotion rules has been added.
+
+        // Compute total using TotalPrice() method that has previously been tested
+        // Use SKUs where only C and D promotion is effective in TotalPrice()
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "B", "C", "D"};
+        var counts = stockKeepingUnits.CountSKU();
+        int expectedTotal = counts.TotalPrice();
+
+        // Create Promotion rule
+        int price = 30;
+        string item_i = "C";
+        string item_j = "D";
+        List<PromotionRule> PromotionRules = new List<PromotionRule>();
+        PromotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
+        var totalPrice = counts.TotalPriceUsingPromotionRules(PromotionRules);
+        bool result = expectedTotal == totalPrice;        
+        Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
+    }
 }
