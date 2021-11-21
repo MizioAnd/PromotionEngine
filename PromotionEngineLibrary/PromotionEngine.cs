@@ -24,8 +24,6 @@ public static class PromotionEngineLibrary
 
     public static IEnumerable<int> CountSKU(this IEnumerable<string>? sku)
     {
-        // IList<int> counts = new List<int>{0, 0, 0, 0, 0};
-        // int[] numbers = new int[ProductList.Count()];
         IList<int> counts = new List<int>(new int[ProductList.Count()]);
 
         // In order to sort by products in ProductList add the elements in ProductList to sku and subtract 1 occurence afterwards
@@ -34,50 +32,16 @@ public static class PromotionEngineLibrary
 
         var uniquesGroupedQuery = from occurence in skuWithAddedProductList group occurence by occurence;
         var orderGroupedQuery = uniquesGroupedQuery.Select(x => x.FirstOrDefault()).ToList();
-        // foreach (var group in uniquesGroupedQuery)
-        // {
-        //     Console.WriteLine(String.Join(",", group));
-        //     Console.WriteLine(String.Join(",", group.FirstOrDefault()));
-        //     Console.WriteLine(group.Count());
-        // }
-        // foreach (var order in orderGroupedQuery)
-        //     Console.WriteLine(order);
         
         // Subtract 1 occurence as mentioned earlier
         var unorderedCounts = uniquesGroupedQuery.Select(x => x.Count() - 1);
-        // var indices = ProductList.Select(x => orderGroupedquery.IndexOf(x));
         var indices = orderGroupedQuery.Select(x => ProductList.IndexOf(x)).ToList();
-        // Console.WriteLine(String.Join(",", indices));
-        // Console.WriteLine(String.Join(",", unorderedCounts));
         var ite = 0;
         foreach (var unorderedCount in unorderedCounts)
         {
             counts[indices[ite]] = unorderedCount;
             ite++;
         }
-        // Console.WriteLine(String.Join(",", counts));
-
-        // foreach(string i in sku)
-        // {
-        //     switch(i)
-        //     {
-        //         case "A":
-        //             counts[0] += 1;
-        //             break;
-        //         case "B":
-        //             counts[1] += 1;
-        //             break;
-        //         case "C":
-        //             counts[2] += 1;
-        //             break;
-        //         case "D":
-        //             counts[3] += 1;
-        //             break;
-        //         case "E":
-        //             counts[4] += 1;
-        //             break;
-        //     }
-        // }
         return counts;
     }
 
