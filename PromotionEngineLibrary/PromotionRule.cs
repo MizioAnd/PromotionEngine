@@ -12,7 +12,7 @@ public class PromotionRule
     public string PrintRule {get;}
     public Func<IEnumerable<int>?, int, int, int> OccurencesDelegate {get; set;}
 
-    public PromotionRule(string item_i, string item_j, int idx_i, int idx_j, int price, int saving, Func<IEnumerable<int>?, int, int, int> ruleMethod)
+    public PromotionRule(string item_i, string? item_j, int idx_i, int idx_j, int price, int saving, Func<IEnumerable<int>?, int, int, int> ruleMethod)
     {
         Item_i = item_i;
         Item_j = item_j;
@@ -20,7 +20,8 @@ public class PromotionRule
         Idx_j = idx_j;
         Price = price;
         Saving = saving;
-        PrintRule = String.Join(";", new List<string>{Item_i, Item_j, Price.ToString()});
+        if (item_j != null)
+            PrintRule = String.Join(";", new List<string>{Item_i, Item_j, Price.ToString()});
         OccurencesDelegate = ruleMethod;
     }
 

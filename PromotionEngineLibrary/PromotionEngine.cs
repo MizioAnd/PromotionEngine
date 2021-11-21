@@ -89,7 +89,17 @@ public static class PromotionEngineLibrary
 
     public static void CreatePromotionNItemsForFixedPrice(this List<PromotionRule>? PromotionRules, int nItems, string item_i, int price)
     {
+        // Anonymous function for Occurences in case of NItemsForFixedPrice
+        Func<IEnumerable<int>?, int, int, int> OccurencesDelegate = delegate(IEnumerable<int>? counts, int idx_i, int nItems)
+        {
+            var occurences = counts.ElementAt(idx_i)/3;
+            return occurences;
+        };
 
+        var idx_i = ProductList.IndexOf(item_i);
+        var saving = nItems*Prices.ElementAt(idx_i) - price;
+        PromotionRule promotionRule = new PromotionRule(item_i, null, idx_i, nItems, price, saving, OccurencesDelegate);
+        PromotionRules.Add(promotionRule);
     }
 
     public static int TotalPriceUsingPromotionRules(this IEnumerable<int>? counts, IEnumerable<PromotionRule> promotionRules)
