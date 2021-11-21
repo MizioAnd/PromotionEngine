@@ -73,8 +73,7 @@ public static class PromotionEngineLibrary
     public static void CreatePromotion2ItemsForFixedPrice(this List<PromotionRule>? PromotionRules, string item_i, string item_j, int price)
     {
 
-        // Create anonymous function for Occurences
-        // Func<IEnumerable<int>?, int, int, int> OccurencesDelegate = Occurences;
+        // Anonymous function for Occurences in case of 2ItemsForFixedPrice
         Func<IEnumerable<int>?, int, int, int> OccurencesDelegate = delegate(IEnumerable<int>? counts, int idx_i, int idx_j)
         {
             var occurences = Math.Min(counts.ElementAt(idx_i), counts.ElementAt(idx_j));
@@ -87,19 +86,6 @@ public static class PromotionEngineLibrary
         PromotionRule promotionRule = new PromotionRule(item_i, item_j, idx_i, idx_j, price, saving, OccurencesDelegate);
         PromotionRules.Add(promotionRule);
     }
-
-    // public static int Occurences(IEnumerable<int>? counts, int idx_i, int idx_j)
-    // {
-    //     // Todo: create anonymous function instead
-
-    //     // Debug purposes
-    //     // var idx_i = 0;
-    //     // var idx_j = 0;
-
-    //     var occurences = Math.Min(counts.ElementAt(idx_i), counts.ElementAt(idx_j));
-    //     return occurences;
-    // }
-
 
     public static int TotalPriceUsingPromotionRules(this IEnumerable<int>? counts, IEnumerable<PromotionRule> promotionRules)
     {
