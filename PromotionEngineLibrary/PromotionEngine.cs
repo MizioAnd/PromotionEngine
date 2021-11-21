@@ -92,7 +92,7 @@ public static class PromotionEngineLibrary
         // Anonymous function for Occurences in case of NItemsForFixedPrice
         Func<IEnumerable<int>?, int, int, int> OccurencesDelegate = delegate(IEnumerable<int>? counts, int idx_i, int nItems)
         {
-            var occurences = counts.ElementAt(idx_i)/3;
+            var occurences = counts.ElementAt(idx_i)/nItems;
             return occurences;
         };
 
