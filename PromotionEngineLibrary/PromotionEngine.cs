@@ -3,7 +3,7 @@
 namespace Promotion.Engine.Library;
 public static class PromotionEngineLibrary
 {
-    public static List<string> ProductList => new List<string>{"A", "B", "C", "D"};
+    public static List<string> ProductList => new List<string>{"A", "B", "C", "D", "E"};
 
     public static int PriceA => 50;
     public static int PriceB => 30;
