@@ -130,4 +130,38 @@ public class Tests
         bool result = expectedTotal == totalPrice;
         Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
     }
+
+    [Test]
+    public void TestTotalPriceUsingPromotionRulesNItemsForFixedPriceAnd2ItemsForFixedPrice()
+    {
+        // Compute total price using TotalPrice() method that has previously been tested
+        // Use SKUs where 3 of A's promotion, 2 of B's promotion, and C and D promotion are effective in TotalPrice()
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
+        var counts = stockKeepingUnits.CountSKU();
+        int expectedTotal = counts.TotalPrice();
+        
+        List<PromotionRule> PromotionRules = new List<PromotionRule>();
+
+        // Create Promotion rule
+        int price = 130;
+        int nItems = 3;
+        string item_i = "A";
+        PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
+        // Create Promotion rule
+        int priceBs = 45;
+        int nItemsBs = 2;
+        string item_i_Bs = "B";
+        PromotionRules.CreatePromotionNItemsForFixedPrice(nItemsBs, item_i_Bs, priceBs);
+
+        // Create Promotion rule
+        price = 30;
+        item_i = "C";
+        string item_j = "D";
+        PromotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
+
+        var totalPrice = counts.TotalPriceUsingPromotionRules(PromotionRules);
+        bool result = expectedTotal == totalPrice;
+        Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
+    }
 }
