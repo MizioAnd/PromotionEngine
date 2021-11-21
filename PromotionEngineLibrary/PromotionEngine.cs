@@ -87,6 +87,11 @@ public static class PromotionEngineLibrary
         PromotionRules.Add(promotionRule);
     }
 
+    public static void CreatePromotionNItemsForFixedPrice(this List<PromotionRule>? PromotionRules, int nItems, string item_i, int price)
+    {
+
+    }
+
     public static int TotalPriceUsingPromotionRules(this IEnumerable<int>? counts, IEnumerable<PromotionRule> promotionRules)
     {
         int priceWithoutPromotion = 0;

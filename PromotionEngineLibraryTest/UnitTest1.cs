@@ -91,11 +91,9 @@ public class Tests
     }
 
     [Test]
-    public void TestTotalPriceUsingPromotionRules()
+    public void TestTotalPriceUsingPromotionRulesWith2ItemsForFixedPrice()
     {
-        // Todo: test that correct total price gets outputed after one promotion rules has been added.
-
-        // Compute total using TotalPrice() method that has previously been tested
+        // Compute total price using TotalPrice() method that has previously been tested
         // Use SKUs where only C and D promotion is effective in TotalPrice()
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "B", "C", "D"};
         var counts = stockKeepingUnits.CountSKU();
@@ -109,6 +107,27 @@ public class Tests
         PromotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
         var totalPrice = counts.TotalPriceUsingPromotionRules(PromotionRules);
         bool result = expectedTotal == totalPrice;        
+        Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
+    }
+
+    [Test]
+    public void TestTotalPriceUsingPromotionRulesNItemsForFixedPrice()
+    {
+        // Compute total price using TotalPrice() method that has previously been tested
+        // Use SKUs where only 3 of A's promotion is effective in TotalPrice()
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "C"};
+        var counts = stockKeepingUnits.CountSKU();
+        int expectedTotal = counts.TotalPrice();
+
+        // Create Promotion rule
+        int price = 130;
+        int nItems = 3;
+        string item_i = "A";
+        
+        List<PromotionRule> PromotionRules = new List<PromotionRule>();
+        PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+        var totalPrice = counts.TotalPriceUsingPromotionRules(PromotionRules);
+        bool result = expectedTotal == totalPrice;
         Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
     }
 }
