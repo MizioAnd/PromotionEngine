@@ -3,6 +3,8 @@
 namespace Promotion.Engine.Library;
 public static class PromotionEngineLibrary
 {
+    public static List<string> ProductList => new List<string>{"A", "B", "C", "D"};
+
     public static int PriceA => 50;
     public static int PriceB => 30;
     public static int PriceC => 20;
@@ -70,12 +72,47 @@ public static class PromotionEngineLibrary
 
     public static void CreatePromotion2ItemsForFixedPrice(this List<PromotionRule>? PromotionRules, string item_i, string item_j, int price)
     {
-        PromotionRule promotionRule = new PromotionRule(item_i, item_j, price);
+
+        // Create anonymous function for Occurences
+        // Func<IEnumerable<int>?, int, int, int> OccurencesDelegate = Occurences;
+        Func<IEnumerable<int>?, int, int, int> OccurencesDelegate = delegate(IEnumerable<int>? counts, int idx_i, int idx_j)
+        {
+            var occurences = Math.Min(counts.ElementAt(idx_i), counts.ElementAt(idx_j));
+            return occurences;
+        };
+
+        var idx_i = ProductList.IndexOf(item_i);
+        var idx_j = ProductList.IndexOf(item_j);
+        var saving = Prices.ElementAt(idx_i) + Prices.ElementAt(idx_j) - price;
+        PromotionRule promotionRule = new PromotionRule(item_i, item_j, idx_i, idx_j, price, saving, OccurencesDelegate);
         PromotionRules.Add(promotionRule);
     }
 
+    // public static int Occurences(IEnumerable<int>? counts, int idx_i, int idx_j)
+    // {
+    //     // Todo: create anonymous function instead
+
+    //     // Debug purposes
+    //     // var idx_i = 0;
+    //     // var idx_j = 0;
+
+    //     var occurences = Math.Min(counts.ElementAt(idx_i), counts.ElementAt(idx_j));
+    //     return occurences;
+    // }
+
+
     public static int TotalPriceUsingPromotionRules(this IEnumerable<int>? counts, IEnumerable<PromotionRule> promotionRules)
     {
-        return 0;
+        int priceWithoutPromotion = 0;
+        foreach (var ite in Enumerable.Range(0, counts.Count()))
+            priceWithoutPromotion += counts.ElementAt(ite)*Prices.ElementAt(ite);
+
+        var totalPromotionSaving = 0;
+        foreach (var rule in promotionRules)
+        {
+            totalPromotionSaving += rule.TotalPromotionSaving(counts);
+        }
+
+        return priceWithoutPromotion - totalPromotionSaving;
     }
 }
