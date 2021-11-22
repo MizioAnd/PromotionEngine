@@ -178,16 +178,11 @@ public class Tests
     [Test]
     public void TestBigCartWithRandomItems()
     {
-        // Todo: Check that in case of a big cart with many SKU ids how the code manages and clears memory
         IEnumerable<string> randomSKU = new List<string>(new string[100]);
         Random random = new Random();
 
         randomSKU = randomSKU.Select(x => PromotionEngineLibrary.ProductList.ToList<string>()[random.Next(100)]);
         
-        // Console.WriteLine(String.Join(",", PromotionEngineLibrary.BigProductList));
-        // Console.WriteLine("");
-        // Console.WriteLine(String.Join(",", randomSKU));
-
         var counts = randomSKU.CountSKU();
         int expectedTotal = counts.TotalPrice();
 
@@ -214,6 +209,5 @@ public class Tests
         var totalPrice = counts.TotalPriceUsingPromotionRules(PromotionRules);
         bool result = expectedTotal == totalPrice;
         Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
-        // Assert.Fail();
     }
 }

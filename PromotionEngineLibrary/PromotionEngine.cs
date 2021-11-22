@@ -49,8 +49,6 @@ public static class PromotionEngineLibrary
 
     public static int TotalPrice(this IEnumerable<int>? counts)
     {
-        // Todo: implement modular expression that uses promotion saving together with price without promotions.
-        // int priceWithoutPromotion = counts.ElementAt(0)*PriceA + counts.ElementAt(1)*PriceB;
         int priceWithoutPromotion = 0;
         foreach (var ite in Enumerable.Range(0, counts.Count()))
         {
