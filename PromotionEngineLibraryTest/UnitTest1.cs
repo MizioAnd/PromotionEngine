@@ -36,7 +36,7 @@ public class Tests
     {
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "B", "A", "B"};
         var counts = stockKeepingUnits.CountSKU();
-        IEnumerable<int> expected = new List<int>{2, 2, 0, 0, 0};
+        IEnumerable<int> expected = (new List<int>{2, 2, 0, 0, 0}).Concat(new List<int>(new int[PromotionEngineLibrary.ProductList.Count() - 5]));
         bool result = counts.SequenceEqual(expected);
         Assert.IsTrue(result, String.Format("Expected counts '{0}': true, but actual counts '{1}': {2}", String.Join(",", expected), String.Join(",", counts), result));
     }
@@ -46,7 +46,7 @@ public class Tests
     {
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "B", "A", "B", "E"};
         var counts = stockKeepingUnits.CountSKU();
-        IEnumerable<int> expected = new List<int>{2, 2, 0, 0, 1};
+        IEnumerable<int> expected = (new List<int>{2, 2, 0, 0, 1}).Concat(new List<int>(new int[PromotionEngineLibrary.ProductList.Count() - 5]));
         bool result = counts.SequenceEqual(expected);
         Assert.IsTrue(result, String.Format("Expected counts '{0}': true, but actual counts '{1}': {2}", String.Join(",", expected), String.Join(",", counts), result));
     }
