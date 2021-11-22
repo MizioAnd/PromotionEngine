@@ -3,7 +3,8 @@
 namespace Promotion.Engine.Library;
 public static class PromotionEngineLibrary
 {
-    public static List<string> ProductList => new List<string>{"A", "B", "C", "D", "E"};
+    public static List<string> ProductListSmall => new List<string>{"A", "B", "C", "D", "E"};
+    public static List<string> ProductList => ProductListSmall.Concat(new List<string>(Enumerable.Range(0,100).Select(x => String.Format("item_{0}", x)))).ToList<string>();
 
     public static int PriceA => 50;
     public static int PriceB => 30;
@@ -11,7 +12,8 @@ public static class PromotionEngineLibrary
     public static int PriceD => 15;
     public static int PriceE => 15;
 
-    public static IEnumerable<int> Prices => new List<int>{PriceA, PriceB, PriceC, PriceD, PriceE};
+    public static IEnumerable<int> PricesSmall => new List<int>{PriceA, PriceB, PriceC, PriceD, PriceE};
+    public static IEnumerable<int> Prices => PricesSmall.Concat(new List<int>(new int[100]));
 
     public static int Promotion3As => 130;
     public static int Promotion3AsSaving => PriceA*3 - Promotion3As;
