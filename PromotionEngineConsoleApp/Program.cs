@@ -14,10 +14,10 @@ class Program
         PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
-        int priceBs = 45;
-        int nItemsBs = 2;
-        string item_i_Bs = "B";
-        PromotionRules.CreatePromotionNItemsForFixedPrice(nItemsBs, item_i_Bs, priceBs);
+        price = 45;
+        nItems = 2;
+        item_i = "B";
+        PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
         price = 30;
@@ -26,6 +26,9 @@ class Program
         PromotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
 
         int rowsWrittenToConsolesWindow = 0;
+        IEnumerable<string> stockKeepingUnits;
+        IEnumerable<int> counts;
+        int totalPrice;
 
         do
         {
@@ -36,18 +39,17 @@ class Program
             Console.WriteLine(String.Format("Example of an input cart: {0}", String.Join("", String.Join(",", stockKeepingUnitsExample))));
             Console.WriteLine("Enter your input cart:");
             try {
-
                 string? input = Console.ReadLine();
                 if (string.IsNullOrEmpty(input))
                     break;
                 Console.WriteLine($"Your input cart: {input}");
                 Console.WriteLine();
 
-                IEnumerable<string> stockKeepingUnits = new List<string>(input.Split(","));
+                stockKeepingUnits = new List<string>(input.Split(","));
 
-                var counts = stockKeepingUnits.CountSKU();
+                counts = stockKeepingUnits.CountSKU();
 
-                var totalPrice = counts.TotalPriceUsingPromotionRules(PromotionRules);
+                totalPrice = counts.TotalPriceUsingPromotionRules(PromotionRules);
 
                 Console.WriteLine("Your total price: {0}", totalPrice);
                 Console.WriteLine();

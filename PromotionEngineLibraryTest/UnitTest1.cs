@@ -159,10 +159,10 @@ public class Tests
         PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
-        int priceBs = 45;
-        int nItemsBs = 2;
-        string item_i_Bs = "B";
-        PromotionRules.CreatePromotionNItemsForFixedPrice(nItemsBs, item_i_Bs, priceBs);
+        price = 45;
+        nItems = 2;
+        item_i = "B";
+        PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
         price = 30;
@@ -177,7 +177,7 @@ public class Tests
 
     [Test]
     public void TestBigCartWithRandomItems()
-    {
+    {     
         IEnumerable<string> randomSKU = new List<string>(new string[100]);
         Random random = new Random();
 
@@ -195,10 +195,10 @@ public class Tests
         PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
-        int priceBs = 45;
-        int nItemsBs = 2;
-        string item_i_Bs = "B";
-        PromotionRules.CreatePromotionNItemsForFixedPrice(nItemsBs, item_i_Bs, priceBs);
+        price = 45;
+        nItems = 2;
+        item_i = "B";
+        PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
         price = 30;
