@@ -29,7 +29,7 @@ class Program
 
         do
         {
-            if (rowsWrittenToConsolesWindow == 0 | rowsWrittenToConsolesWindow >= 30)
+            if (rowsWrittenToConsolesWindow == 0 | rowsWrittenToConsolesWindow >= 44)
             {
                 ResetConsoleWindow();
             }
@@ -63,7 +63,7 @@ class Program
                 Console.WriteLine();
             }
             
-            rowsWrittenToConsolesWindow += 6;
+            rowsWrittenToConsolesWindow += 9;
         } while (true);
         return;
 
