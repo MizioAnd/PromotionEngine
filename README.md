@@ -36,3 +36,7 @@ $ dotnet build
 Run unit tests,
 
 $ dotnet test PromotionEngineLibraryTest/PromotionEngineLibraryTest.csproj
+
+Run the console app,
+
+$ dotnet run --project PromotionEngineConsoleApp/PromotionEngineConsoleApp.csproj
