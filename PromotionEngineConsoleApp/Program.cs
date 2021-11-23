@@ -43,7 +43,6 @@ class Program
                 Console.WriteLine($"Your input cart: {input}");
                 Console.WriteLine();
 
-                // Todo: Check format of input. It should be cast to IEnumerable<string> like stockKeepingUnits
                 IEnumerable<string> stockKeepingUnits = new List<string>(input.Split(","));
 
                 var counts = stockKeepingUnits.CountSKU();
