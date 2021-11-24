@@ -213,4 +213,61 @@ public class Tests
         bool result = expectedTotal == totalPrice;
         Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
     }
+
+    [TestCase(500)]
+    [TestCase(50)]
+    [TestCase(5)]
+    public void TestPromotionEngineProfiler(int value)
+    {
+        var profiler = MiniProfiler.StartNew("Promotion Engine Profiler");
+
+        using (profiler.Step("Outer Scope"))
+        {
+            // Todo: Check that in case of a big cart with many SKU ids how the code manages and clears memory
+            IEnumerable<string> randomSKU;
+            using (profiler.Step($"Create cart with {value} random items"))
+            {
+                randomSKU = new List<string>(new string[value]);
+                Random random = new Random();
+                randomSKU = randomSKU.Select(x => PromotionEngineLibrary.ProductList.ToList<string>()[random.Next(PromotionEngineLibrary.ProductList.Count())]);
+            }
+
+            IEnumerable<int> counts;
+            using (profiler.CustomTiming("CountSKU", "test method"))
+            {
+                counts = randomSKU.CountSKU();
+            }
+
+            List<PromotionRule> PromotionRules = new List<PromotionRule>();
+
+            using (profiler.Step("Add Promotion rules"))
+            {
+                // Create Promotion rule
+                int price = 130;
+                int nItems = 3;
+                string item_i = "A";
+                PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
+                // Create Promotion rule
+                price = 45;
+                nItems = 2;
+                item_i = "B";
+                PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
+                // Create Promotion rule
+                price = 30;
+                item_i = "C";
+                string item_j = "D";
+                PromotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
+            }
+
+            using (profiler.CustomTiming("TotalPriceUsingPromotionRules", "test method"))
+            {
+                var totalPrice = counts.TotalPriceUsingPromotionRules(PromotionRules);
+            }
+        }
+        // Console.WriteLine(profiler.RenderPlainText());
+        Console.WriteLine(MiniProfiler.Current.RenderPlainText());
+        // Assert.Fail();
+    }
 }
