@@ -29,11 +29,12 @@ public static class PromotionEngineLibrary
         IList<int> counts = new List<int>(new int[ProductList.Count()]);
 
         // In order to sort by products in ProductList add the elements in ProductList to sku and subtract 1 occurence afterwards
-        List<string> skuWithAddedProductList = sku.ToList<string>();
+        List<string> skuWithAddedProductList = sku?.ToList<string>() ?? throw new ArgumentNullException("Parameter needs to be set", nameof(sku));
         skuWithAddedProductList.AddRange(ProductList);
 
         var uniquesGroupedQuery = from occurence in skuWithAddedProductList group occurence by occurence;
-        var orderGroupedQuery = uniquesGroupedQuery.Select(x => x.FirstOrDefault()).ToList();
+        // var orderGroupedQuery = uniquesGroupedQuery.Select(x => x.FirstOrDefault()).ToList();
+        var orderGroupedQuery = uniquesGroupedQuery.Select(x => x.Key).ToList();
         
         // Subtract 1 occurence as mentioned earlier
         var unorderedCounts = uniquesGroupedQuery.Select(x => x.Count() - 1);
@@ -49,6 +50,9 @@ public static class PromotionEngineLibrary
 
     public static int TotalPrice(this IEnumerable<int>? counts)
     {
+        if (counts == null)
+            throw new ArgumentNullException("Parameter needs to be set", nameof(counts));   
+        
         int priceWithoutPromotion = 0;
         foreach (var ite in Enumerable.Range(0, counts.Count()))
         {
@@ -71,10 +75,15 @@ public static class PromotionEngineLibrary
 
     public static void CreatePromotion2ItemsForFixedPrice(this List<PromotionRule>? PromotionRules, string item_i, string item_j, int price)
     {
+        if (PromotionRules == null)
+            throw new ArgumentNullException("Parameter needs to be set", nameof(PromotionRules));   
 
         // Anonymous function for Occurences in case of 2ItemsForFixedPrice
         Func<IEnumerable<int>?, int, int, int> OccurencesDelegate = delegate(IEnumerable<int>? counts, int idx_i, int idx_j)
         {
+            if (counts == null)
+                throw new ArgumentNullException("Parameter needs to be set", nameof(counts));   
+
             var occurences = Math.Min(counts.ElementAt(idx_i), counts.ElementAt(idx_j));
             return occurences;
         };
@@ -88,9 +97,15 @@ public static class PromotionEngineLibrary
 
     public static void CreatePromotionNItemsForFixedPrice(this List<PromotionRule>? PromotionRules, int nItems, string item_i, int price)
     {
+        if (PromotionRules == null)
+            throw new ArgumentNullException("Parameter needs to be set", nameof(PromotionRules));   
+        
         // Anonymous function for Occurences in case of NItemsForFixedPrice
         Func<IEnumerable<int>?, int, int, int> OccurencesDelegate = delegate(IEnumerable<int>? counts, int idx_i, int nItems)
         {
+            if (counts == null)
+                throw new ArgumentNullException("Parameter needs to be set", nameof(counts));   
+
             var occurences = counts.ElementAt(idx_i)/nItems;
             return occurences;
         };
@@ -104,6 +119,9 @@ public static class PromotionEngineLibrary
     public static int TotalPriceUsingPromotionRules(this IEnumerable<int>? counts, IEnumerable<PromotionRule> promotionRules)
     {
         int priceWithoutPromotion = 0;
+        if (counts == null)
+            throw new ArgumentNullException("Parameter needs to be set", nameof(counts));   
+        
         foreach (var ite in Enumerable.Range(0, counts.Count()))
             priceWithoutPromotion += counts.ElementAt(ite)*Prices.ElementAt(ite);
 

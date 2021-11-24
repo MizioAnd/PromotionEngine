@@ -3,6 +3,7 @@ using Promotion.Engine.Library;
 using System;
 using System.Linq;
 using System.Collections.Generic;
+using StackExchange.Profiling;
 
 namespace Promotion.Engine.Library.Test;
 public class Tests
@@ -96,7 +97,9 @@ public class Tests
         List<PromotionRule> PromotionRules = new List<PromotionRule>();
         PromotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
         var promotionRule = PromotionRules.ElementAt(0);
-        bool result = promotionRule.Item_j.Equals(item_j) & promotionRule.Item_j.Equals(item_j) & promotionRule.Price.Equals(price);
+        bool result = false;
+        if (!string.IsNullOrEmpty(promotionRule.Item_j))
+            result = promotionRule.Item_j.Equals(item_j) & promotionRule.Item_j.Equals(item_j) & promotionRule.Price.Equals(price);
         Assert.IsTrue(result, String.Format("Expected item '{0}': true, but actual item '{1}': {2}", String.Join(",", expected), promotionRule.PrintRule, result));
     }
 
