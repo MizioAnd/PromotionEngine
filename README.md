@@ -40,3 +40,6 @@ $ dotnet test PromotionEngineLibraryTest/PromotionEngineLibraryTest.csproj
 Run the console app,
 
 $ dotnet run --project PromotionEngineConsoleApp/PromotionEngineConsoleApp.csproj
+
+For docker deploy place yourself one level above the folder of the this cloned project and run,
+$ bash PromotionEngine/DockerDeploy/deploy.sh
