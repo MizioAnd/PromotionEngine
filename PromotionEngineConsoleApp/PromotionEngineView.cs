@@ -29,10 +29,7 @@ public class PromotionEngineView
             Console.WriteLine("Enter your input cart:");
             try {
                 Input = Console.ReadLine();
-                // if (string.IsNullOrEmpty(Input))
-                //     throw new ArgumentNullException("Parameter needs to be set", nameof(Input));
 
-                // First handled exception is thrown in call below promotionEngineViewModel.TotalPrice and then this null check is reached even though this code is earlier
                 if (string.IsNullOrEmpty(Input))
                     break;
                 
@@ -46,8 +43,6 @@ public class PromotionEngineView
                 Console.WriteLine("Your next input cart...");
 
             } catch (ArgumentOutOfRangeException e) {
-                // if (string.IsNullOrEmpty(Input))
-                //     Environment.Exit(0);
                 Console.WriteLine("--> Your input format was not correct");
                 Console.WriteLine("Try entering");
                 Console.WriteLine("A,B");
