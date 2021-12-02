@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PromotionEngineLibraryTest"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PromotionEngineConsoleApp", "PromotionEngineConsoleApp\PromotionEngineConsoleApp.csproj", "{96FA1A65-D2A8-4AD6-ABC2-EFEB41474A59}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PromotionEngineConsoleAppTest", "PromotionEngineConsoleAppTest\PromotionEngineConsoleAppTest.csproj", "{D7312D4C-6B60-4F3C-8CB6-7EB14CDFE2E8}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -30,5 +32,9 @@ Global
 		{96FA1A65-D2A8-4AD6-ABC2-EFEB41474A59}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96FA1A65-D2A8-4AD6-ABC2-EFEB41474A59}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96FA1A65-D2A8-4AD6-ABC2-EFEB41474A59}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D7312D4C-6B60-4F3C-8CB6-7EB14CDFE2E8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D7312D4C-6B60-4F3C-8CB6-7EB14CDFE2E8}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D7312D4C-6B60-4F3C-8CB6-7EB14CDFE2E8}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D7312D4C-6B60-4F3C-8CB6-7EB14CDFE2E8}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
