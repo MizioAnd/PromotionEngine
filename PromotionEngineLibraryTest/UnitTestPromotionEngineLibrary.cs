@@ -14,12 +14,6 @@ public class Tests
     }
 
     [Test]
-    public void Test1()
-    {
-        Assert.Pass();
-    }
-
-    [Test]
     public void TestTotalPrice()
     {
         // SKUs {"A", "B", "A", "B"}
