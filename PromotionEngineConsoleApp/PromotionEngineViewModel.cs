@@ -16,8 +16,6 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
     {
         _totalPrice = 0;
         Add3PromotionRules();
-        // computeTotalPriceFor3RulesDel += this.ComputeTotalPriceFor3Rules;
-        // PropertyChanged += new PropertyChangedEventHandler(computeTotalPriceFor3RulesDel);
         PropertyChanged += new PropertyChangedEventHandler(this.ComputeTotalPriceFor3Rules);
     }
 
@@ -31,25 +29,13 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
                 _input = value;
                 NotifyPropertyChanged();
             }
-            // _input = value;
-            // NotifyPropertyChanged();
-            // computeTotalPriceFor3RulesDel += this.ComputeTotalPriceFor3Rules;
-            // computeTotalPriceFor3RulesDel();
-            // computeTotalPriceFor3RulesDel -= this.ComputeTotalPriceFor3Rules;
         } 
     }
-
-    // public delegate void ComputeTotalPriceFor3RulesDelegate(object? sender, PropertyChangedEventArgs e);
-    // ComputeTotalPriceFor3RulesDelegate? computeTotalPriceFor3RulesDel;
 
     public int TotalPrice
     {
         get { return _totalPrice; }
-        set 
-        { 
-            _totalPrice = value; 
-            // NotifyPropertyChanged();
-        }
+        set { _totalPrice = value; }
     }
 
     public static IEnumerable<string> StockKeepingUnitsExample { get; } = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
