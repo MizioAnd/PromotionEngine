@@ -307,8 +307,8 @@ public class UnitTestPromotionEngineLibrary
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
         var counts = stockKeepingUnits.CountSKU();
 
-        List<int> rulesAppliedCount = counts.OptimizeRulesApplied();
-        var overlaps = OverlappingPromotionRules(rulesAppliedCount);
+        IEnumerable<int> rulesAppliedCount = counts.OptimizeRulesApplied();
+        var overlaps = rulesAppliedCount.OverlappingPromotionRules();
         var expectedOverlaps = 0;
         var result = overlaps == expectedOverlaps;
         Assert.True(result, String.Format("Expected number of times multiple rules overlapped '{0}': true, and actual overlap count '{1}': '{2}'", expectedOverlaps, overlaps, result));
