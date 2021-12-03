@@ -16,6 +16,7 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
     {
         _totalPrice = 0;
         PropertyChanged += new PropertyChangedEventHandler(this.ComputeTotalPriceFor3Rules);
+        PropertyChanged += new PropertyChangedEventHandler(this.UpdatePromotionRulesCount);
         Add3PromotionRules();
     }
 
@@ -32,9 +33,23 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         } 
     }
 
+    private int _promotionRulesCount;
+    public int PromotionRulesCount
+    {
+        get { return _promotionRulesCount; }
+        set 
+        {
+            if (value != _promotionRulesCount)
+            {
+                _promotionRulesCount = value;
+            }
+        }
+    }
+
     public List<PromotionRule> PromotionRules
     {
         get { return _promotionRules; }
+        set {;}
     }
 
 
@@ -42,7 +57,10 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
     {
         get 
         {
-            NotifyPropertyChanged();
+            if (_promotionRules.Count() != PromotionRulesCount)
+            {
+                NotifyPropertyChanged();
+            }
             return _totalPrice; 
         }
         set { _totalPrice = value; }
@@ -88,5 +106,10 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
             _totalPrice = _counts.TotalPriceUsingPromotionRules(_promotionRules);
 
         } catch (ArgumentNullException) {}
+    }
+
+    private void UpdatePromotionRulesCount(object? sender, PropertyChangedEventArgs e)
+    {
+        PromotionRulesCount = _promotionRules.Count();
     }
 }
