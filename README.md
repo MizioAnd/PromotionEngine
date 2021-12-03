@@ -1,7 +1,9 @@
 # PromotionEngine
 A simple promotion engine for a checkout process
 
-Prerequisites: .NET 6 SDK and VS Code.
+Prerequisites: .NET 6.0 SDK C# 10 and Docker (installed using Docker below).
+
+## How the start of the project was created
 
 Create new solution,
 
@@ -41,6 +43,8 @@ Run the console app,
 
 $ dotnet run --project PromotionEngineConsoleApp/PromotionEngineConsoleApp.csproj
 
-For docker deploy place yourself one level above the folder of the this cloned project and run,
+## Deploy project into a Docker container
+
+For Docker deploy place yourself one level above the folder of the this cloned project and run,
 
 $ bash PromotionEngine/DockerDeploy/deploy.sh
