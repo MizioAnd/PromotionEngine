@@ -15,8 +15,8 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
     public PromotionEngineViewModel()
     {
         _totalPrice = 0;
-        Add3PromotionRules();
         PropertyChanged += new PropertyChangedEventHandler(this.ComputeTotalPriceFor3Rules);
+        Add3PromotionRules();
     }
 
     public string? Input 
@@ -32,9 +32,39 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         } 
     }
 
+    // private int _promotionRulesCount;
+    // public int PromotionRulesCount
+    // {
+    //     get { return _promotionRulesCount; }
+    //     set 
+    //     {
+    //         if (value != this.PromotionRulesCount)
+    //         {
+    //             _promotionRulesCount = value;
+    //             NotifyPropertyChanged();
+    //         }
+    //     }
+    // }
+
+    public List<PromotionRule> PromotionRules
+    {
+        get 
+        {
+            // if (_promotionRules.Count() != PromotionRulesCount)
+            //     PromotionRulesCount = _promotionRules.Count();
+            return _promotionRules; 
+        }
+        set {;}
+    }
+
+
     public int TotalPrice
     {
-        get { return _totalPrice; }
+        get 
+        {
+            NotifyPropertyChanged();
+            return _totalPrice; 
+        }
         set { _totalPrice = value; }
     }
 
@@ -53,19 +83,19 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         int price = 130;
         int nItems = 3;
         string item_i = "A";
-        _promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+        PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
         price = 45;
         nItems = 2;
         item_i = "B";
-        _promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+        PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
         price = 30;
         item_i = "C";
         string item_j = "D";
-        _promotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
+        PromotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
     }
 
     private void ComputeTotalPriceFor3Rules(object? sender, PropertyChangedEventArgs e)
