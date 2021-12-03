@@ -42,7 +42,7 @@ public class PromotionEngineView
                 Console.WriteLine();
                 Console.WriteLine("Your next input cart...");
 
-            } catch (ArgumentOutOfRangeException e) {
+            } catch (ArgumentOutOfRangeException) {
                 Console.WriteLine("--> Your input format was not correct");
                 Console.WriteLine("Try entering");
                 Console.WriteLine("A,B");

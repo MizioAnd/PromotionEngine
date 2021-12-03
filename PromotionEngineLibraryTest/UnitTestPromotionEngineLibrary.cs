@@ -1,5 +1,4 @@
 using NUnit.Framework;
-using Promotion.Engine.Library;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -82,8 +81,7 @@ public class UnitTestPromotionEngineLibrary
     [Test]
     public void TestCreatePromotion2ItemsForFixedPrice()
     {
-        // Todo: Rules should then be created that gets included in the engine.
-        // adds promotion to a collection of promotion rules
+        // Adds promotion rule to a collection of promotion rules
         int price = 30;
         string item_i = "C";
         string item_j = "D";

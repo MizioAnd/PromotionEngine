@@ -32,29 +32,9 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         } 
     }
 
-    // private int _promotionRulesCount;
-    // public int PromotionRulesCount
-    // {
-    //     get { return _promotionRulesCount; }
-    //     set 
-    //     {
-    //         if (value != this.PromotionRulesCount)
-    //         {
-    //             _promotionRulesCount = value;
-    //             NotifyPropertyChanged();
-    //         }
-    //     }
-    // }
-
     public List<PromotionRule> PromotionRules
     {
-        get 
-        {
-            // if (_promotionRules.Count() != PromotionRulesCount)
-            //     PromotionRulesCount = _promotionRules.Count();
-            return _promotionRules; 
-        }
-        set {;}
+        get { return _promotionRules; }
     }
 
 
@@ -83,19 +63,19 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         int price = 130;
         int nItems = 3;
         string item_i = "A";
-        PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+        _promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
         price = 45;
         nItems = 2;
         item_i = "B";
-        PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+        _promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
         price = 30;
         item_i = "C";
         string item_j = "D";
-        PromotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
+        _promotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
     }
 
     private void ComputeTotalPriceFor3Rules(object? sender, PropertyChangedEventArgs e)

@@ -1,6 +1,5 @@
 using NUnit.Framework;
 using System;
-using Promotion.Engine.ConsoleApp;
 using Promotion.Engine.Library;
 using System.Collections.Generic;
 
