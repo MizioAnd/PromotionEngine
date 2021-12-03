@@ -296,6 +296,22 @@ public class UnitTestPromotionEngineLibrary
     {
         // Todo: find f(x)=0 where x = {times_rule_1_applied, times_rule_2_applied, .., times_rule_n_applied}
         // f: x --> number of times multiple rules overlapped 
+
+        // Outcommented since to general as first step
+        // var cartSize = 10;
+        // IEnumerable<string> randomSKU = new List<string>(new string[cartSize]);
+        // Random random = new Random();
+        // randomSKU = randomSKU.Select(x => PromotionEngineLibrary.ProductList.ToList<string>()[random.Next(cartSize)]);
+        // var counts = randomSKU.CountSKU();
+
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
+        var counts = stockKeepingUnits.CountSKU();
+
+        List<int> rulesAppliedCount = counts.OptimizeRulesApplied();
+        var overlaps = OverlappingPromotionRules(rulesAppliedCount);
+        var expectedOverlaps = 0;
+        var result = overlaps == expectedOverlaps;
+        Assert.True(result, String.Format("Expected number of times multiple rules overlapped '{0}': true, and actual overlap count '{1}': '{2}'", expectedOverlaps, overlaps, result));
     }
 
     [Test]
