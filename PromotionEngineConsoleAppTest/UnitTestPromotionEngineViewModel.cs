@@ -47,4 +47,23 @@ public class UnitTestPromotionEngineViewModel
         var result = expectedTotal == totalPrice;
         Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
     }
+
+    [Test]
+    public void TestTotalPriceAfterManuallyAddingExtraPromotionRule()
+    {
+        var input = "A,A,A,B,B,B,B,B,C,D,E,E";
+        PromotionEngineViewModel promotionEngineViewModel = new PromotionEngineViewModel();
+        promotionEngineViewModel.Input = input;
+        var totalPrice = promotionEngineViewModel.TotalPrice;
+
+        // Create Promotion rule for "E"
+        var price = 25;
+        var nItems = 2;
+        var item_i = "E";
+        promotionEngineViewModel.PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
+        var totalPriceAfterAddingRule = promotionEngineViewModel.TotalPrice;
+        var result = totalPriceAfterAddingRule != totalPrice;
+        Assert.IsTrue(result, String.Format("totalPriceAfterAddingRule '{0}': true, and totalt price before '{1}' do not match: {2}", totalPriceAfterAddingRule, totalPrice, result));
+    }
 }
