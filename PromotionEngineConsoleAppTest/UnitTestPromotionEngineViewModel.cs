@@ -5,7 +5,7 @@ using Promotion.Engine.Library;
 using System.Collections.Generic;
 
 namespace Promotion.Engine.ConsoleApp.UnitTests;
-public class Tests1
+public class UnitTestPromotionEngineViewModel
 {
     [SetUp]
     public void Setup()

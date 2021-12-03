@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using StackExchange.Profiling;
 
 namespace Promotion.Engine.Library.Test;
-public class Tests
+public class UnitTestPromotionEngineLibrary
 {
     [SetUp]
     public void Setup()
