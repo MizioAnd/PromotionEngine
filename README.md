@@ -41,12 +41,10 @@ $ dotnet test PromotionEngineLibraryTest/PromotionEngineLibraryTest.csproj
 
 Create NuGet package Promotion.Engine.Library (same name as namespace) assuming you have set up an account on nuget.org with and API key. Go into the PromotionEngineLibrary folder and add to .csproj file inside existing `<PropertyGroup>` tag,
 
-`
-<PackageId>Promotion.Engine.Library</PackageId>
-<Version>1.0.0</Version>
-<Authors>your_name</Authors>
-<Company>your_company</Company>
-`
+`<PackageId>Promotion.Engine.Library</PackageId>`\
+`<Version>1.0.0</Version>`\
+`<Authors>your_name</Authors>`\
+`<Company>your_company</Company>`
 
 Then create the NuGet by running,
 
