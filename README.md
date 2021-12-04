@@ -66,6 +66,34 @@ Run the console app,
 
 $ dotnet run --project PromotionEngineConsoleApp/PromotionEngineConsoleApp.csproj
 
+Publish the console app in order to create a .dll and an executable file that are both framework-dependent (.NET 6.0) but also cross-platform,
+
+$ dotnet publish PromotionEngineConsoleApp/PromotionEngineConsoleApp.csproj --configuration Release
+
+The console app can be run by either using the executable file like this,
+
+$ PromotionEngineConsoleApp/bin/Release/net6.0/publish/PromotionEngineConsoleApp
+
+or by dotnet cmd to run the .dll,
+
+$ dotnet PromotionEngineConsoleApp/bin/Release/net6.0/PromotionEngineConsoleApp.dll
+
+Publish a Linux 64-bit self-contained (no need for .NET runtime installed) platform-dependent executable using -r <RID> together with dotnet publish,
+
+$ dotnet publish PromotionEngineConsoleApp/PromotionEngineConsoleApp.csproj --configuration Release -r linux-x64
+
+To run executable,
+
+$ PromotionEngineConsoleApp/bin/Release/net6.0/linux-x64/PromotionEngineConsoleApp
+
+For Windows 64-bit executable,
+
+$ dotnet publish PromotionEngineConsoleApp/PromotionEngineConsoleApp.csproj --configuration Release -r win-x64
+
+To run it,
+
+$ PromotionEngineConsoleApp/bin/Release/net6.0/win-x64/publish/PromotionEngineConsoleApp.exe
+
 ## Deploy project into a Docker container
 
 For Docker deploy place yourself one level above the folder of the this cloned project and run,
