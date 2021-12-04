@@ -71,3 +71,7 @@ $ dotnet run --project PromotionEngineConsoleApp/PromotionEngineConsoleApp.cspro
 For Docker deploy place yourself one level above the folder of the this cloned project and run,
 
 $ bash PromotionEngine/DockerDeploy/deploy.sh
+
+## Output from running PromotionEngineConsoleApp
+
+![Output from running PromotionEngineConsoleApp](OutputPromotionEngineConsoleApp.png)
