@@ -76,7 +76,7 @@ or by dotnet cmd to run the .dll,
 
 $ dotnet PromotionEngineConsoleApp/bin/Release/net6.0/PromotionEngineConsoleApp.dll
 
-Publish a Linux 64-bit self-contained (no need for .NET runtime installed) platform-dependent executable using -r <RID> together with dotnet publish,
+Publish a Linux 64-bit self-contained (no need for .NET runtime installed) platform-dependent executable using -r `<RID>` together with dotnet publish,
 
 $ dotnet publish PromotionEngineConsoleApp/PromotionEngineConsoleApp.csproj --configuration Release -r linux-x64
 
