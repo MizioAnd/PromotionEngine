@@ -2,6 +2,21 @@
 namespace Promotion.Engine.Library;
 public static class RuleOverlapAlgo
 {
+    public static IEnumerable<int> NonOptimizeRulesApplied(this IEnumerable<int> countsSKU, IEnumerable<PromotionRule> promotionRules)
+    {
+        // Todo: count every time a rule is applied. Find index of promotion rule in list PromotionRules and add 1 foreach time it is applied
+        // How to use something like PromotionRules.IndexOf(promotionRule) would probably be the right way since,
+        // List<PromotionRule>? PromotionRules
+
+        List<int> promotionRulesAppliedCount = new List<int>(new int[promotionRules.Count()]);
+        foreach (var rule in promotionRules)
+        {
+            promotionRulesAppliedCount[promotionRules.ToList<PromotionRule>().IndexOf(rule)] = rule.PromotionOccurences(countsSKU);
+        }
+
+        return promotionRulesAppliedCount;
+    }
+
     public static IEnumerable<int> OptimizeRulesApplied(this IEnumerable<int> countsSKU, IEnumerable<PromotionRule> promotionRules)
     {
         // Todo: count every time a rule is applied. Find index of promotion rule in list PromotionRules and add 1 foreach time it is applied
@@ -11,6 +26,7 @@ public static class RuleOverlapAlgo
         List<int> promotionRulesAppliedCount = new List<int>(new int[promotionRules.Count()]);
         foreach (var rule in promotionRules)
         {
+            // Todo: implement logic that prevents overlap and optimizes the total savings
             promotionRulesAppliedCount[promotionRules.ToList<PromotionRule>().IndexOf(rule)] = rule.PromotionOccurences(countsSKU);
         }
 
