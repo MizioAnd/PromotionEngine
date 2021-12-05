@@ -26,9 +26,23 @@ public class UnitTestRuleOverlapAlgo
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
         var counts = stockKeepingUnits.CountSKU();
 
-        IEnumerable<int> rulesAppliedCount = counts.OptimizeRulesApplied();
-        var overlaps = rulesAppliedCount.OverlappingPromotionRules();
-        var expectedOverlaps = 0;
+        List<PromotionRule> promotionRules = new List<PromotionRule>();
+
+        // Create Promotion rule
+        int price = 130;
+        int nItems = 3;
+        string item_i = "B";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
+        // Create Promotion rule
+        price = 45;
+        nItems = 2;
+        item_i = "B";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
+        IEnumerable<int> rulesAppliedCount = counts.OptimizeRulesApplied(promotionRules);
+        var overlaps = rulesAppliedCount.OverlappingPromotionRules(promotionRules);
+        var expectedOverlaps = 1;
         var result = overlaps == expectedOverlaps;
         Assert.True(result, String.Format("Expected number of times multiple rules overlapped '{0}': true, and actual overlap count '{1}': '{2}'", expectedOverlaps, overlaps, result));
     }
