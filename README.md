@@ -1,7 +1,12 @@
 # PromotionEngine
-A simple promotion engine for a checkout process
-
+A simple promotion engine for a checkout process.\
 Prerequisites: .NET 6.0 SDK C# 10 and Docker (installed using Docker below).
+
+Contents:
+- [How the start of the project was created](#How-the-start-of-the-project-was-created)
+- [Create NuGet pkg for PromotionEngineLibrary](#Create-NuGetpkg-for-PromotionEngineLibrary)
+- [Deploy project into a Docker container](#Deploy-project-into-a-Docker-container)
+- [Output from running PromotionEngineConsoleApp](#Output-from-running-PromotionEngineConsoleApp)
 
 ## How the start of the project was created
 
@@ -39,6 +44,8 @@ Run unit tests,
 
 $ dotnet test PromotionEngineLibraryTest/PromotionEngineLibraryTest.csproj
 
+## Create NuGet pkg for PromotionEngineLibrary
+
 Create NuGet package Promotion.Engine.Library (same name as namespace) assuming you have set up an account on nuget.org with and API key. Go into the PromotionEngineLibrary folder and add to .csproj file inside existing `<PropertyGroup>` tag,
 
 `<PackageId>Promotion.Engine.Library</PackageId>`\
@@ -59,6 +66,8 @@ Add new NuGet pkg to your console app .csproj,
 $ dotnet add package Promotion.Engine.Library
 
 Which will download the package from https://www.nuget.org/packages/Promotion.Engine.Library/
+
+## Run and publish console app
 
 Run the console app,
 
