@@ -5,6 +5,7 @@ Prerequisites: .NET 6.0 SDK C# 10 and Docker (installed using Docker below).
 Contents:
 - [How the start of the project was created](#How-the-start-of-the-project-was-created)
 - [Create NuGet pkg for PromotionEngineLibrary](#Create-NuGetpkg-for-PromotionEngineLibrary)
+- [Run and publish console app](#Run-and-publish-console-app)
 - [Deploy project into a Docker container](#Deploy-project-into-a-Docker-container)
 - [Output from running PromotionEngineConsoleApp](#Output-from-running-PromotionEngineConsoleApp)
 
