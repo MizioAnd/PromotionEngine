@@ -15,7 +15,7 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestTotalPrice()
+    public void TotalPrice_SmallInputCartWithTwoUniqueSKUAndOnePromotionApplied_PriceSubtractedSavingsOfOnePromotion()
     {
         // SKUs {"A", "B", "A", "B"}
         IEnumerable<int> counts = new List<int>{2, 2, 0, 0};
@@ -28,7 +28,7 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestCountSKU()
+    public void CountSKU_SmallInputCartWithTwoUniqueSKU_CountOfEachUniqueSKUFromInputCartArrangedInAList()
     {
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "B", "A", "B"};
         var counts = stockKeepingUnits.CountSKU();
@@ -38,7 +38,7 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestCountSKUGenerality()
+    public void CountSKU_SmallInputCartWithThreeUniqueSKU_CountOfEachUniqueSKUFromInputCartArrangedInAList()
     {
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "B", "A", "B", "E"};
         var counts = stockKeepingUnits.CountSKU();
@@ -48,8 +48,9 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestScenarioA()
+    public void TotalPrice_InputCartWith3UniqueSKU_PriceWithoutAnyPromotion()
     {
+        // Test Scenario A
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "B", "C"};
         var counts = stockKeepingUnits.CountSKU();
         int expectedTotal = PromotionEngineLibrary.PriceA + PromotionEngineLibrary.PriceB + PromotionEngineLibrary.PriceC;
@@ -59,8 +60,9 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestScenarioB()
+    public void TotalPrice_InputCartWith3UniqueSKU_PriceSubtractedSavingFromTwoPromotionRules()
     {
+        // Test Scenario B
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "A", "A", "B", "B", "B", "B", "B", "C"};
         var counts = stockKeepingUnits.CountSKU();
         int expectedTotal = 5*PromotionEngineLibrary.PriceA + 5*PromotionEngineLibrary.PriceB + PromotionEngineLibrary.PriceC - PromotionEngineLibrary.Promotion3AsSaving - 2*PromotionEngineLibrary.Promotion2BsSaving;
@@ -70,8 +72,9 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestScenarioC()
+    public void TotalPrice_InputCartWith3UniqueSKU_PriceSubtractedSavingFromThreePromotionRules()
     {
+        // Test Scenario C
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
         var counts = stockKeepingUnits.CountSKU();
         int expectedTotal = 3*PromotionEngineLibrary.PriceA + 5*PromotionEngineLibrary.PriceB + PromotionEngineLibrary.PriceC + PromotionEngineLibrary.PriceD - PromotionEngineLibrary.Promotion3AsSaving - 2*PromotionEngineLibrary.Promotion2BsSaving - PromotionEngineLibrary.PromotionCandDSaving;
@@ -81,7 +84,7 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestCreatePromotion2ItemsForFixedPrice()
+    public void CreatePromotion2ItemsForFixedPrice_TwoUniqueSKUAndPriceOfPromotionRule_PopulatedVariableValuesOnNewlyCreatedPromotionRuleMatchesInputVariables()
     {
         // Adds promotion rule to a collection of promotion rules
         int price = 30;
@@ -98,7 +101,7 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestTotalPriceUsingPromotionRulesWith2ItemsForFixedPrice()
+    public void TotalPriceUsingPromotionRules_PromotionRulesWith2ItemsForFixedPrice_PriceMatchesReturnValueOfMethodTotalPrice()
     {
         // Compute total price using TotalPrice() method that has previously been tested
         // Use SKUs where only C and D promotion is effective in TotalPrice()
@@ -118,7 +121,7 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestTotalPriceUsingPromotionRulesNItemsForFixedPrice()
+    public void TotalPriceUsingPromotionRules_PromotionRuleCreatedWithMethodCreatePromotionNItemsForFixedPrice_PricesIsSubtractedSavingsOfPromotionRule()
     {
         // Compute total price using TotalPrice() method that has previously been tested
         // Use SKUs where only 3 of A's promotion is effective in TotalPrice()
@@ -139,7 +142,7 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestTotalPriceUsingPromotionRulesNItemsForFixedPriceAnd2ItemsForFixedPrice()
+    public void TotalPriceUsingPromotionRules_PromotionRuleCreatedWithMethodsCreatePromotionNItemsForFixedPriceAndMethodAndCreatePromotion2ItemsForFixedPrice_PriceIsSubtractedSavingsOfThreePromotionRules()
     {
         // Compute total price using TotalPrice() method that has previously been tested
         // Use SKUs where 3 of A's promotion, 2 of B's promotion, and C and D promotion are effective in TotalPrice()
@@ -173,7 +176,7 @@ public class UnitTestPromotionEngineLibrary
     }
 
     [Test]
-    public void TestBigCartWithRandomItems()
+    public void TotalPriceUsingPromotionRules_InputCartWith100RandomSKUs_PriceIsSubtractedSavingsOfThreePromotionRules()
     {     
         IEnumerable<string> randomSKU = new List<string>(new string[100]);
         Random random = new Random();
@@ -211,7 +214,7 @@ public class UnitTestPromotionEngineLibrary
     [TestCase(500)]
     [TestCase(50)]
     [TestCase(5)]
-    public void TestPromotionEngineProfiler(int value)
+    public void CustomTiming_PrerequisiteCodePartsForMethodTotalPriceUsingPromotionRules_MethodCurrentOfMiniProfilerShowsExecutionTimeOfCodePartsThatLeadsToPriceComputation(int value)
     {
         var profiler = MiniProfiler.StartNew("Promotion Engine Profiler");
 
