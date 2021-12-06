@@ -13,7 +13,7 @@ public class UnitTestRuleOverlapAlgo
     }
   
    [Test]
-    public void NonOptimizeRulesApplied_TwoOverlappingPromotionRules_ExpectOneOverlap()
+    public void NonOptimizeRulesApplied_TwoOverlappingPromotionRules_OneOverlap()
     {
         // Todo: find f(x)=0 where x = {times_rule_1_applied, times_rule_2_applied, .., times_rule_n_applied}
         // f: x --> number of times multiple rules overlapped 
@@ -50,7 +50,7 @@ public class UnitTestRuleOverlapAlgo
     }
 
     [Test]
-    public void OptimizeRulesApplied_TwoOverlappingPromotionRules_ExpectZeroOverlap()
+    public void OptimizeRulesApplied_TwoOverlappingPromotionRules_ZeroOverlap()
     {
         // Todo: find f(x)=0 where x = {times_rule_1_applied, times_rule_2_applied, .., times_rule_n_applied}
         // f: x --> number of times multiple rules overlapped 
@@ -88,13 +88,13 @@ public class UnitTestRuleOverlapAlgo
 
 
     [Test]
-    public void MaxSavings_TwoOverlappingPromotionRules_ExpectHigherSavingsThanRandomSelectionOfAppliedOverlappingPromotionRules()
+    public void MaxSavings_TwoOverlappingPromotionRules_HigherSavingsThanForRandomSelectionOfAppliedOverlappingPromotionRules()
     {
         // Todo: maximize savings and find x_0 which satifies f(x_0)=0 and g(x_0)=max(g(x)) where g maps to total amount saved
     }
 
     [Test]
-    public void OptimizeRulesAppliedAndMaxSavings_TwoOverlappingPromotionRules_ExpectHigherSavingsThanMaxSavingsWithAppliedOverlappingPromotionRules()
+    public void OptimizeRulesAppliedAndMaxSavings_TwoOverlappingPromotionRules_HigherSavingsThanForMaxSavingsWithAppliedOverlappingPromotionRules()
     {
         // Todo: Create algo that both satifies 0 overlapping promotion rules applied and max savings corresponding to accumulated
         // savings from applied promotion rules
