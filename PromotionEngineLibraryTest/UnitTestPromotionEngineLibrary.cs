@@ -3,8 +3,10 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using StackExchange.Profiling;
+using Promotion.Engine.Library;
 
-namespace Promotion.Engine.Library.Test;
+namespace Promotion.Engine.UnitTests.Library;
+[TestFixture]
 public class UnitTestPromotionEngineLibrary
 {
     [SetUp]

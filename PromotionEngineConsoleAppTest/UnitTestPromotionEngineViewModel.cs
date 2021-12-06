@@ -2,8 +2,10 @@ using NUnit.Framework;
 using System;
 using Promotion.Engine.Library;
 using System.Collections.Generic;
+using Promotion.Engine.ConsoleApp;
 
-namespace Promotion.Engine.ConsoleApp.UnitTests;
+namespace Promotion.Engine.UnitTests.ConsoleApp;
+[TestFixture]
 public class UnitTestPromotionEngineViewModel
 {
     [SetUp]
