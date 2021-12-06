@@ -1,8 +1,10 @@
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using Promotion.Engine.Library;
 
-namespace Promotion.Engine.Library.Test;
+namespace Promotion.Engine.UnitTests.Library;
+[TestFixture]
 public class UnitTestRuleOverlapAlgo
 {
     [SetUp]
