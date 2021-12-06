@@ -14,7 +14,7 @@ public class UnitTestPromotionEngineViewModel
     }
 
     [Test]
-    public void TestComputeTotalPriceFor3Rules()
+    public void TotalPrice_EventIsRaisedInPropertyInputAndPropertyTotalPrice_TotalPricePropertyIsUpdatedBySubscribedEventhandlerMethodComputeTotalPriceFor3Rules()
     {   
         var input = "A,A,A,B,B,B,B,B,C,D";
         IEnumerable<string> stockKeepingUnits = new List<string>(input.Split(","));
@@ -50,7 +50,7 @@ public class UnitTestPromotionEngineViewModel
     }
 
     [Test]
-    public void TestTotalPriceAfterManuallyAddingExtraPromotionRule()
+    public void TotalPrice_EventIsRaisedInPropertyInputAndPropertyTotalPriceWithManuallyAddingExtraPromotionRule_TotalPricePropertyIsUpdatedByCombinedEffortOfSubscribedEventhandlerMethodsComputeTotalPriceFor3RulesAndUpdatePromotionRulesCount()
     {
         var input = "A,A,A,B,B,B,B,B,C,D,E,E";
         PromotionEngineViewModel promotionEngineViewModel = new PromotionEngineViewModel();
