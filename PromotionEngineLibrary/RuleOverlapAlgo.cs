@@ -53,4 +53,14 @@ public static class RuleOverlapAlgo
         // Divide by 2 since same overlap gets counted twice
         return overlappingPromotionRulesCount/2;
     }
+
+    public static void MaxSavings()
+    {
+        throw new NotImplementedException("Please create a test first.");
+    }
+
+    public static void OptimizeRulesAppliedAndMaxSavings()
+    {
+        throw new NotImplementedException("Please create a test first.");
+    }
 }

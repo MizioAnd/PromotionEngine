@@ -12,22 +12,8 @@ public class UnitTestRuleOverlapAlgo
     {
     }
   
-   [Test]
-    public void NonOptimizeRulesApplied_TwoOverlappingPromotionRules_OneOverlap()
+    private IEnumerable<PromotionRule> Create2OverlappingPromotionRules()
     {
-        // Todo: find f(x)=0 where x = {times_rule_1_applied, times_rule_2_applied, .., times_rule_n_applied}
-        // f: x --> number of times multiple rules overlapped 
-
-        // Outcommented since to general as first step
-        // var cartSize = 10;
-        // IEnumerable<string> randomSKU = new List<string>(new string[cartSize]);
-        // Random random = new Random();
-        // randomSKU = randomSKU.Select(x => PromotionEngineLibrary.ProductList.ToList<string>()[random.Next(cartSize)]);
-        // var counts = randomSKU.CountSKU();
-
-        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
-        var counts = stockKeepingUnits.CountSKU();
-
         List<PromotionRule> promotionRules = new List<PromotionRule>();
 
         // Create Promotion rule
@@ -41,6 +27,20 @@ public class UnitTestRuleOverlapAlgo
         nItems = 2;
         item_i = "B";
         promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
+        return promotionRules;
+    }
+
+    [Test]
+    public void NonOptimizeRulesApplied_TwoOverlappingPromotionRules_OneOverlap()
+    {
+        // Find f(x)=1 where x = {times_rule_1_applied, times_rule_2_applied, .., times_rule_n_applied}
+        // f: x --> number of times multiple rules overlapped
+
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
+        var counts = stockKeepingUnits.CountSKU();
+
+        List<PromotionRule> promotionRules = (List<PromotionRule>)Create2OverlappingPromotionRules();
 
         IEnumerable<int> rulesAppliedCount = counts.NonOptimizeRulesApplied(promotionRules);
         var overlaps = rulesAppliedCount.OverlappingPromotionRules(promotionRules);
@@ -52,32 +52,13 @@ public class UnitTestRuleOverlapAlgo
     [Test]
     public void OptimizeRulesApplied_TwoOverlappingPromotionRules_ZeroOverlap()
     {
-        // Todo: find f(x)=0 where x = {times_rule_1_applied, times_rule_2_applied, .., times_rule_n_applied}
-        // f: x --> number of times multiple rules overlapped 
-
-        // Outcommented since to general as first step
-        // var cartSize = 10;
-        // IEnumerable<string> randomSKU = new List<string>(new string[cartSize]);
-        // Random random = new Random();
-        // randomSKU = randomSKU.Select(x => PromotionEngineLibrary.ProductList.ToList<string>()[random.Next(cartSize)]);
-        // var counts = randomSKU.CountSKU();
+        // Find f(x)=0 where x = {times_rule_1_applied, times_rule_2_applied, .., times_rule_n_applied}
+        // f: x --> number of times multiple rules overlapped
 
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
         var counts = stockKeepingUnits.CountSKU();
 
-        List<PromotionRule> promotionRules = new List<PromotionRule>();
-
-        // Create Promotion rule
-        int price = 130;
-        int nItems = 3;
-        string item_i = "B";
-        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
-
-        // Create Promotion rule
-        price = 45;
-        nItems = 2;
-        item_i = "B";
-        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+        IEnumerable<PromotionRule> promotionRules = Create2OverlappingPromotionRules();
 
         IEnumerable<int> rulesAppliedCount = counts.OptimizeRulesApplied(promotionRules);
         var overlaps = rulesAppliedCount.OverlappingPromotionRules(promotionRules);
@@ -85,7 +66,6 @@ public class UnitTestRuleOverlapAlgo
         var result = overlaps == expectedOverlaps;
         Assert.True(result, String.Format("Expected number of times multiple rules overlapped '{0}': true, and actual overlap count '{1}': '{2}'", expectedOverlaps, overlaps, result));
     }
-
 
     [Test]
     public void MaxSavings_TwoOverlappingPromotionRules_HigherSavingsThanForRandomSelectionOfAppliedOverlappingPromotionRules()
