@@ -15,7 +15,8 @@ public class UnitTestPromotionEngineViewModel
 
     [Test]
     public void TotalPrice_EventIsRaisedInPropertyInputAndPropertyTotalPrice_TotalPricePropertyIsUpdatedBySubscribedEventhandlerMethodComputeTotalPriceFor3Rules()
-    {   
+    {
+        // Arrange   
         var input = "A,A,A,B,B,B,B,B,C,D";
         IEnumerable<string> stockKeepingUnits = new List<string>(input.Split(","));
         var counts = stockKeepingUnits.CountSKU();
@@ -40,11 +41,14 @@ public class UnitTestPromotionEngineViewModel
         string item_j = "D";
         PromotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
 
-        var expectedTotal = counts.TotalPriceUsingPromotionRules(PromotionRules);
-
         PromotionEngineViewModel promotionEngineViewModel = new PromotionEngineViewModel();
+
+        // Act
         promotionEngineViewModel.Input = input;
         var totalPrice = promotionEngineViewModel.TotalPrice;
+
+        // Assert
+        var expectedTotal = counts.TotalPriceUsingPromotionRules(PromotionRules);
         var result = expectedTotal == totalPrice;
         Assert.IsTrue(result, String.Format("Expected total price '{0}': true, but actual price '{1}': {2}", expectedTotal, totalPrice, result));
     }
@@ -52,6 +56,7 @@ public class UnitTestPromotionEngineViewModel
     [Test]
     public void TotalPrice_EventIsRaisedInPropertyInputAndPropertyTotalPriceWithManuallyAddingExtraPromotionRule_TotalPricePropertyIsUpdatedByCombinedEffortOfSubscribedEventhandlerMethodsComputeTotalPriceFor3RulesAndUpdatePromotionRulesCount()
     {
+        // Arrange
         var input = "A,A,A,B,B,B,B,B,C,D,E,E";
         PromotionEngineViewModel promotionEngineViewModel = new PromotionEngineViewModel();
         promotionEngineViewModel.Input = input;
@@ -63,7 +68,10 @@ public class UnitTestPromotionEngineViewModel
         var item_i = "E";
         promotionEngineViewModel.PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
+        // Act
         var totalPriceAfterAddingRule = promotionEngineViewModel.TotalPrice;
+
+        // Assert
         var result = totalPriceAfterAddingRule != totalPrice;
         Assert.IsTrue(result, String.Format("totalPriceAfterAddingRule '{0}': true, and totalt price before '{1}' do not match: {2}", totalPriceAfterAddingRule, totalPrice, result));
     }
