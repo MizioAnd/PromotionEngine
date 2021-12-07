@@ -5,8 +5,10 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Promotion.Engine.Library</PackageId>
-    <Version>1.0.0</Version>
+    <Version>1.1.0</Version>
     <Authors>strucai</Authors>
+    <description>A simple promotion engine library for a checkout process</description>
+    <projectUrl>https://github.com/MizioAnd/PromotionEngine</projectUrl>
     <Company>none</Company>
   </PropertyGroup>
 
