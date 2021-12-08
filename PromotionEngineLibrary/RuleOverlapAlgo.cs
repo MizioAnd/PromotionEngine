@@ -15,10 +15,17 @@ public static class RuleOverlapAlgo
     public static IEnumerable<int> OptimizeRulesApplied(this IEnumerable<int> countsSKU, IEnumerable<PromotionRule> promotionRules)
     {
         List<int> promotionRulesAppliedCount = new List<int>(new int[promotionRules.Count()]);
+        List<PromotionRule> promotionRulesApplied = new List<PromotionRule>(promotionRules.Count());
         foreach (var rule in promotionRules)
         {
             // Todo: implement logic that prevents overlap and optimizes the total savings
-            promotionRulesAppliedCount[promotionRules.ToList<PromotionRule>().IndexOf(rule)] = rule.PromotionOccurences(countsSKU);
+            // Simple check would be that if rule has overlap with earlier added rule, then skip.
+            if (promotionRulesApplied.OverLappingRulesIndices(rule).Count() == 0)
+            {
+                promotionRulesAppliedCount[promotionRules.ToList<PromotionRule>().IndexOf(rule)] = rule.PromotionOccurences(countsSKU);
+                if (rule.PromotionOccurences(countsSKU) > 0)
+                    promotionRulesApplied.Add(rule);
+            }
         }
         return promotionRulesAppliedCount;
     }
@@ -64,7 +71,7 @@ public static class RuleOverlapAlgo
         // var overlappingRulesIndicesExceptOneRuleQuery = rulesIndicesExceptOneRuleQuery.Where(x => x.Items.Where(x => x != null).Intersect(rule.Items).Count() > 0);
         // var countOverlap = overlappingRulesIndicesExceptOneRuleQuery.Count();
         // var overlappingRulesIndicesQuery = overlappingRulesIndicesExceptOneRuleQuery.Select(x => appliedPromotionRulesQuery.ToList<PromotionRule>().IndexOf(x));
-        // var doesQueriesMatch = overlappingRulesIndicesQuery.SequenceEqual(overlappingRulesIndices);
+        // var doQueriesMatch = overlappingRulesIndicesQuery.SequenceEqual(overlappingRulesIndices);
         return overlappingRulesIndices;
     }
 
