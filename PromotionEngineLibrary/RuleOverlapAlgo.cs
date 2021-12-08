@@ -29,19 +29,43 @@ public static class RuleOverlapAlgo
         // Only check overlaps for rules with an applied count > 0
         int overlappingPromotionRulesCount = 0;
         IEnumerable<int> overlappingRulesIndices;
-        foreach (var rule in promotionRules)
+        var appliedPromotionRulesQuery = promotionRules.Where(x => rulesAppliedCount.ToList<int>().ElementAt(x.Idx_i) > 0);
+
+        // Debug
+        var isPromotionRulesDimSame = promotionRules.Count() == appliedPromotionRulesQuery.Count();
+
+        foreach (var rule in appliedPromotionRulesQuery)
         {
-            if (promotionRules.Where(x => x.Item_i == rule.Item_i).Count() > 0)
+            if (appliedPromotionRulesQuery.Where(x => x != rule).Count() > 0)
             {
-                overlappingRulesIndices = promotionRules.Where(
-                    x => x.Item_i == rule.Item_i & rulesAppliedCount.ToList<int>().ElementAt(x.Idx_i) > 0 
-                    & promotionRules.ToList<PromotionRule>().IndexOf(rule) != promotionRules.ToList<PromotionRule>().IndexOf(x)).Select(
-                        x => promotionRules.ToList<PromotionRule>().IndexOf(x));
+                // var overlappingRulesIndicesTest = promotionRules.Where(
+                //     x => x.Item_i == rule.Item_i & rulesAppliedCount.ToList<int>().ElementAt(x.Idx_i) > 0 
+                //     & promotionRules.ToList<PromotionRule>().IndexOf(rule) != promotionRules.ToList<PromotionRule>().IndexOf(x)).Select(
+                //         x => promotionRules.ToList<PromotionRule>().IndexOf(x));
+
+                overlappingRulesIndices = appliedPromotionRulesQuery.OverLappingRulesIndices(rule);
+                // var isOverlappingRulesIndicesEqual = overlappingRulesIndices.SequenceEqual(overlappingRulesIndicesTest);
                 overlappingPromotionRulesCount += overlappingRulesIndices.Count();
             }
         }
         // Divide by 2 since same overlap gets counted twice
         return overlappingPromotionRulesCount/2;
+    }
+
+    private static IEnumerable<int> OverLappingRulesIndices(this IEnumerable<PromotionRule> appliedPromotionRulesQuery, PromotionRule rule)
+    {
+        var overlappingRulesIndices = appliedPromotionRulesQuery
+        .Where(x => appliedPromotionRulesQuery.ToList<PromotionRule>().IndexOf(rule) != appliedPromotionRulesQuery.ToList<PromotionRule>().IndexOf(x))
+        .Where(x => x.Items.Where(x => x != null).Intersect(rule.Items).Count() > 0)
+        .Select(x => appliedPromotionRulesQuery.ToList<PromotionRule>().IndexOf(x));
+
+        // var rulesIndicesExceptOneRuleQuery = appliedPromotionRulesQuery.Where(x => appliedPromotionRulesQuery.ToList<PromotionRule>().IndexOf(rule) != appliedPromotionRulesQuery.ToList<PromotionRule>().IndexOf(x));
+        // var countExceptRule = rulesIndicesExceptOneRuleQuery.Count();
+        // var overlappingRulesIndicesExceptOneRuleQuery = rulesIndicesExceptOneRuleQuery.Where(x => x.Items.Where(x => x != null).Intersect(rule.Items).Count() > 0);
+        // var countOverlap = overlappingRulesIndicesExceptOneRuleQuery.Count();
+        // var overlappingRulesIndicesQuery = overlappingRulesIndicesExceptOneRuleQuery.Select(x => appliedPromotionRulesQuery.ToList<PromotionRule>().IndexOf(x));
+        // var doesQueriesMatch = overlappingRulesIndicesQuery.SequenceEqual(overlappingRulesIndices);
+        return overlappingRulesIndices;
     }
 
     public static void MaxSavings()

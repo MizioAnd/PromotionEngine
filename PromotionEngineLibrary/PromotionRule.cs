@@ -7,6 +7,7 @@ public class PromotionRule
     public int Saving {get;}
     public string Item_i {get;}
     public string? Item_j {get;}
+    public IEnumerable<string?> Items {get;}
     public int Idx_i {get;}
     public int Idx_j {get;}
     public string? PrintRule {get;}
@@ -16,6 +17,7 @@ public class PromotionRule
     {
         Item_i = item_i;
         Item_j = item_j;
+        Items = new List<string?>{item_i, item_j};
         Idx_i = idx_i;
         Idx_j = idx_j;
         Price = price;

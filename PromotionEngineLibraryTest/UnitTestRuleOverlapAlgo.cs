@@ -12,10 +12,8 @@ public class UnitTestRuleOverlapAlgo
     {
     }
   
-    private IEnumerable<PromotionRule> Create2OverlappingPromotionRules()
+    private static void Create2OverlappingPromotionRules(List<PromotionRule> promotionRules)
     {
-        List<PromotionRule> promotionRules = new List<PromotionRule>();
-
         // Create Promotion rule
         int price = 130;
         int nItems = 3;
@@ -27,9 +25,23 @@ public class UnitTestRuleOverlapAlgo
         nItems = 2;
         item_i = "B";
         promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
-
-        return promotionRules;
     }
+
+    private static void Create2NonOverlappingPromotionRules(List<PromotionRule> promotionRules)
+    {
+        // Create Promotion rule
+        int price = 130;
+        int nItems = 3;
+        string item_i = "A";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
+        // Create Promotion rule
+        price = 30;
+        item_i = "C";
+        string item_j = "D";
+        promotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
+    }
+
 
     [Test]
     public void NonOptimizeRulesApplied_TwoOverlappingPromotionRules_OneOverlap()
@@ -40,7 +52,8 @@ public class UnitTestRuleOverlapAlgo
         // Arrange
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
         var counts = stockKeepingUnits.CountSKU();
-        List<PromotionRule> promotionRules = (List<PromotionRule>)Create2OverlappingPromotionRules();
+        List<PromotionRule> promotionRules = new List<PromotionRule>();
+        Create2OverlappingPromotionRules(promotionRules);
 
         // Act
         IEnumerable<int> rulesAppliedCount = counts.NonOptimizeRulesApplied(promotionRules);
@@ -61,7 +74,9 @@ public class UnitTestRuleOverlapAlgo
         // Arrange
         IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "B", "B", "B", "B", "B", "C", "D"};
         var counts = stockKeepingUnits.CountSKU();
-        IEnumerable<PromotionRule> promotionRules = Create2OverlappingPromotionRules();
+        List<PromotionRule> promotionRules = new List<PromotionRule>();
+        Create2OverlappingPromotionRules(promotionRules);
+        Create2NonOverlappingPromotionRules(promotionRules);
 
         // Act
         IEnumerable<int> rulesAppliedCount = counts.OptimizeRulesApplied(promotionRules);
