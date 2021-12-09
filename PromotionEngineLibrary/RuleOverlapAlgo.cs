@@ -16,11 +16,14 @@ public static class RuleOverlapAlgo
     {
         List<int> promotionRulesAppliedCount = new List<int>(new int[promotionRules.Count()]);
         List<PromotionRule> promotionRulesApplied = new List<PromotionRule>(promotionRules.Count());
+        bool noOverlapWithEarlierRules;
         foreach (var rule in promotionRules)
         {
             // Todo: implement logic that prevents overlap and optimizes the total savings
             // Simple check would be that if rule has overlap with earlier added rule, then skip.
-            if (promotionRulesApplied.OverLappingRulesIndices(rule).Count() == 0)
+            
+            noOverlapWithEarlierRules = promotionRulesApplied.OverLappingRulesIndices(rule).Count() == 0;
+            if (noOverlapWithEarlierRules)
             {
                 promotionRulesAppliedCount[promotionRules.ToList<PromotionRule>().IndexOf(rule)] = rule.PromotionOccurences(countsSKU);
                 if (rule.PromotionOccurences(countsSKU) > 0)
@@ -57,6 +60,11 @@ public static class RuleOverlapAlgo
         }
         // Divide by 2 since same overlap gets counted twice
         return overlappingPromotionRulesCount/2;
+    }
+
+    public static int OverlappingSKUConsumptionInRules()
+    {
+        throw new NotImplementedException("Please create a test first.");
     }
 
     private static IEnumerable<int> OverLappingRulesIndices(this IEnumerable<PromotionRule> appliedPromotionRulesQuery, PromotionRule rule)

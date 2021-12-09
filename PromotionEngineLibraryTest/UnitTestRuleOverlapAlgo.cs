@@ -21,7 +21,7 @@ public class UnitTestRuleOverlapAlgo
         promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
-        price = 45;
+        price = 90;
         nItems = 2;
         item_i = "B";
         promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
@@ -86,6 +86,27 @@ public class UnitTestRuleOverlapAlgo
         var expectedOverlaps = 0;
         var result = overlaps == expectedOverlaps;
         Assert.True(result, String.Format("Expected number of times multiple rules overlapped '{0}': true, and actual overlap count '{1}': '{2}'", expectedOverlaps, overlaps, result));
+    }
+
+    [Test]
+    public void OverlappingSKUConsumptionInRules_TwoOverlappingPromotionRules_ZeroOverlappingSKUAndBothOverlappingRulesApplied()
+    {
+        // Arrange
+        IEnumerable<string> stockKeepingUnits = new List<string>{"B", "B", "B", "B", "B"};
+        var counts = stockKeepingUnits.CountSKU();
+        List<PromotionRule> promotionRules = new List<PromotionRule>();
+        Create2OverlappingPromotionRules(promotionRules);
+
+        // Act
+        IEnumerable<int> rulesAppliedCount = counts.OptimizeRulesApplied(promotionRules);
+        var overlapsRules = rulesAppliedCount.OverlappingPromotionRules(promotionRules);
+        var overlapsSKU = RuleOverlapAlgo.OverlappingSKUConsumptionInRules();
+
+        // Assert
+        var expectedOverlapsRules = 1;
+        var expectedOverlapsSKU = 0;
+        var result = overlapsSKU == expectedOverlapsSKU & overlapsRules == expectedOverlapsRules;
+        Assert.True(result, String.Format("Expected number of times rules applied to same SKU'{0}': true, and actual overlap count '{1}': '{2}'", expectedOverlapsSKU, overlapsSKU, result));
     }
 
     [Test]
