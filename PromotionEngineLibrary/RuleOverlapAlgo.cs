@@ -57,7 +57,7 @@ public static class RuleOverlapAlgo
         int idxRule;
         PromotionRule rule;
         string skuConsumed = "";
-        string ruleSkuConsumed = "";
+        
         string ruleItems;
         foreach (var ruleAppliedCount in rulesAppliedCount)
         {
@@ -72,6 +72,7 @@ public static class RuleOverlapAlgo
                 if (rule.Items.Contains(null))
                     multiplyFactor *= rule.IdxProduct_j;
 
+                string ruleSkuConsumed = "";
                 foreach (var ite in Enumerable.Range(0, multiplyFactor))
                     ruleSkuConsumed = String.Format("{0},{1}", ruleSkuConsumed, ruleItems);
                 skuConsumed = String.Format("{0},{1}", skuConsumed, ruleSkuConsumed);
