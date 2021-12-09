@@ -19,9 +19,6 @@ public static class RuleOverlapAlgo
         bool noOverlapWithEarlierRules;
         foreach (var rule in promotionRules)
         {
-            // Todo: implement logic that prevents overlap and optimizes the total savings
-            // Simple check would be that if rule has overlap with earlier added rule, then skip.
-            
             noOverlapWithEarlierRules = promotionRulesApplied.OverLappingRulesIndices(rule).Count() == 0;
             if (noOverlapWithEarlierRules)
             {
@@ -35,26 +32,15 @@ public static class RuleOverlapAlgo
 
     public static int OverlappingPromotionRules(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules)
     {
-        // Either do a check on PromotionRule class members Item_i and Item_j which is similar to checking instead if any of idx_i or idx_j matches
-        // Only check overlaps for rules with an applied count > 0
         int overlappingPromotionRulesCount = 0;
         IEnumerable<int> overlappingRulesIndices;
         var appliedPromotionRulesQuery = promotionRules.Where(x => rulesAppliedCount.ToList<int>().ElementAt(x.Idx_i) > 0);
-
-        // Debug
-        var isPromotionRulesDimSame = promotionRules.Count() == appliedPromotionRulesQuery.Count();
 
         foreach (var rule in appliedPromotionRulesQuery)
         {
             if (appliedPromotionRulesQuery.Where(x => x != rule).Count() > 0)
             {
-                // var overlappingRulesIndicesTest = promotionRules.Where(
-                //     x => x.Item_i == rule.Item_i & rulesAppliedCount.ToList<int>().ElementAt(x.Idx_i) > 0 
-                //     & promotionRules.ToList<PromotionRule>().IndexOf(rule) != promotionRules.ToList<PromotionRule>().IndexOf(x)).Select(
-                //         x => promotionRules.ToList<PromotionRule>().IndexOf(x));
-
                 overlappingRulesIndices = appliedPromotionRulesQuery.OverLappingRulesIndices(rule);
-                // var isOverlappingRulesIndicesEqual = overlappingRulesIndices.SequenceEqual(overlappingRulesIndicesTest);
                 overlappingPromotionRulesCount += overlappingRulesIndices.Count();
             }
         }
