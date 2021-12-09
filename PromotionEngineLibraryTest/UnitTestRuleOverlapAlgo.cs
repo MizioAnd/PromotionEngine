@@ -100,13 +100,13 @@ public class UnitTestRuleOverlapAlgo
         // Act
         IEnumerable<int> rulesAppliedCount = counts.OptimizeRulesApplied(promotionRules);
         var overlapsRules = rulesAppliedCount.OverlappingPromotionRules(promotionRules);
-        var overlapsSKU = RuleOverlapAlgo.OverlappingSKUConsumptionInRules();
+        var overlapsSKU = rulesAppliedCount.OverlappingSKUConsumptionInRules(promotionRules, counts);
 
         // Assert
         var expectedOverlapsRules = 1;
         var expectedOverlapsSKU = 0;
         var result = overlapsSKU == expectedOverlapsSKU & overlapsRules == expectedOverlapsRules;
-        Assert.True(result, String.Format("Expected number of times rules applied to same SKU'{0}': true, and actual overlap count '{1}': '{2}'", expectedOverlapsSKU, overlapsSKU, result));
+        Assert.True(result, String.Format("Expected number of overlapping SKUs after applied rules '{0}': true, and actual overlap count '{1}': '{2}'", expectedOverlapsSKU, overlapsSKU, result));
     }
 
     [Test]

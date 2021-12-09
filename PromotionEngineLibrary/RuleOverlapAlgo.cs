@@ -34,7 +34,7 @@ public static class RuleOverlapAlgo
     {
         int overlappingPromotionRulesCount = 0;
         IEnumerable<int> overlappingRulesIndices;
-        var appliedPromotionRulesQuery = promotionRules.Where(x => rulesAppliedCount.ToList<int>().ElementAt(x.Idx_i) > 0);
+        var appliedPromotionRulesQuery = promotionRules.Where(x => rulesAppliedCount.ToList<int>().ElementAt(promotionRules.ToList().IndexOf(x)) > 0);
 
         foreach (var rule in appliedPromotionRulesQuery)
         {
@@ -48,9 +48,39 @@ public static class RuleOverlapAlgo
         return overlappingPromotionRulesCount/2;
     }
 
-    public static int OverlappingSKUConsumptionInRules()
+    public static int OverlappingSKUConsumptionInRules(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules, IEnumerable<int> countsSKU)
     {
-        throw new NotImplementedException("Please create a test first.");
+        // Todo: for each applied promotion rule use number of times it was applied in rulesAppliedCount together 
+        // with Items member of a promotion to compute sum of SKU consumption that should not be larger than actual countsSKU
+        int idxRule;
+        PromotionRule rule;
+        string skuConsumed = "";
+        string ruleSkuConsumed = "";
+        string ruleItems;
+        foreach (var ruleAppliedCount in rulesAppliedCount)
+        {
+            if (ruleAppliedCount > 0)
+            {
+                idxRule = rulesAppliedCount.ToList<int>().IndexOf(ruleAppliedCount);
+                rule = promotionRules.ToList<PromotionRule>().ElementAt(idxRule);
+
+                ruleItems = String.Join(",", rule.Items.Where(x => x != null));
+
+                var multiplyFactor = ruleAppliedCount;
+                if (rule.Items.Contains(null))
+                    multiplyFactor *= rule.IdxProduct_j;
+
+                foreach (var ite in Enumerable.Range(0, multiplyFactor))
+                    ruleSkuConsumed = String.Format("{0},{1}", ruleSkuConsumed, ruleItems);
+                skuConsumed = String.Format("{0},{1}", skuConsumed, ruleSkuConsumed);
+            }
+        }
+        skuConsumed = String.Join(",", skuConsumed.Split(",").Where(x => x != ""));
+        var stockKeepingUnits = new List<string>(skuConsumed.Split(","));
+        var appliedRulesSKUcounts = stockKeepingUnits.CountSKU();
+
+        var diff = appliedRulesSKUcounts.Select(x => x - countsSKU.ToList().ElementAt(appliedRulesSKUcounts.ToList<int>().IndexOf(x)));
+        return diff.Sum();
     }
 
     private static IEnumerable<int> OverLappingRulesIndices(this IEnumerable<PromotionRule> appliedPromotionRulesQuery, PromotionRule rule)
