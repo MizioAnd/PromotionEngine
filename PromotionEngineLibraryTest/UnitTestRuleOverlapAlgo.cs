@@ -100,7 +100,7 @@ public class UnitTestRuleOverlapAlgo
         // Act
         IEnumerable<int> rulesAppliedCount = counts.OptimizeRulesApplied(promotionRules);
         var overlapsRules = rulesAppliedCount.OverlappingPromotionRules(promotionRules);
-        var overlapsSKU = rulesAppliedCount.OverlappingSKUConsumptionInRules(promotionRules, counts);
+        var overlapsSKU = rulesAppliedCount.OverlappingSKUConsumptionInRulesSum(promotionRules, counts);
 
         // Assert
         var expectedOverlapsRules = 1;
