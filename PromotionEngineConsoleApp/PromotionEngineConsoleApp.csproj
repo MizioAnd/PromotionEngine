@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Promotion.Engine.Library" Version="1.1.1" />
+    <PackageReference Include="Promotion.Engine.Library" Version="1.2.0" />
   </ItemGroup>
 
 </Project>
