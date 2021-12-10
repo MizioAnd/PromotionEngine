@@ -83,7 +83,7 @@ public class UnitTestRuleOverlapAlgo
         var overlaps = rulesAppliedCount.OverlappingPromotionRules(promotionRules);
 
         // Assert
-        var expectedOverlaps = 0;
+        var expectedOverlaps = 1;
         var result = overlaps == expectedOverlaps;
         Assert.True(result, String.Format("Expected number of times multiple rules overlapped '{0}': true, and actual overlap count '{1}': '{2}'", expectedOverlaps, overlaps, result));
     }
