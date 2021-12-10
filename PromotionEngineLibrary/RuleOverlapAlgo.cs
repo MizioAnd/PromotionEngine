@@ -24,28 +24,7 @@ public static class RuleOverlapAlgo
         
         foreach (var rule in promotionRules)
         {
-            // noOverlapWithEarlierRules = promotionRulesApplied.OverLappingRulesIndices(rule).Count() == 0;
-            // if (noOverlapWithEarlierRules)
-            // {
-            //     promotionRulesAppliedCount[promotionRules.ToList<PromotionRule>().IndexOf(rule)] = rule.PromotionOccurences(countsSKUState);
-            //     if (rule.PromotionOccurences(countsSKUState) > 0)
-            //         promotionRulesApplied.Add(rule);
-            // }
-
-            // Todo: Subtract consumed SKU from countsSKU using method OverlappingSKUConsumptionInRules()
             promotionRulesAppliedCount[promotionRules.ToList<PromotionRule>().IndexOf(rule)] = rule.PromotionOccurences(countsSKUState);
-
-            // // Debug
-            // if (rule.IdxProduct_j == 2)
-            //     Console.WriteLine("2. rule");
-
-            // var countsConsumed = promotionRulesAppliedCount
-            //     .Where(x => promotionRulesAppliedCount.ToList().IndexOf(x) == promotionRules.ToList<PromotionRule>()
-            //     .IndexOf(rule)).OverlappingSKUConsumptionInRules(promotionRules, countsSKUState);
-
-            // Todo: promotionRulesAppliedCount.ToList<int>().IndexOf(x) does only return a value if x is a unique of course
-            // var counstByAppliedRule = promotionRulesAppliedCount
-            //     .Where(x => promotionRulesAppliedCount.ToList<int>().IndexOf(x) == promotionRules.ToList<PromotionRule>().IndexOf(rule));
 
             // Reset list with 0s
             var counstByAppliedRule = new List<int>(new int[promotionRules.Count()]);
@@ -109,8 +88,6 @@ public static class RuleOverlapAlgo
         {
             if (ruleAppliedCount > 0)
             {
-                // ruleAppliedCount does not allow for inverse determination of indices since values are not uniques
-                // idxRule = rulesAppliedCount.ToList<int>().IndexOf(ruleAppliedCount);
                 rule = promotionRules.ToList<PromotionRule>().ElementAt(idxRule);
 
                 ruleItems = String.Join(",", rule.Items.Where(x => x != null));
