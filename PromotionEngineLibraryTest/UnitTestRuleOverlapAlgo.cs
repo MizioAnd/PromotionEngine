@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using Promotion.Engine.Library;
+using System.Linq;
 
 namespace Promotion.Engine.UnitTests.Library;
 [TestFixture]
@@ -115,8 +116,24 @@ public class UnitTestRuleOverlapAlgo
         // Todo: maximize savings and find x_0 which satifies f(x_0)=0 and g(x_0)=max(g(x)) where g maps to total amount saved
 
         // Arrange
+        IEnumerable<string> stockKeepingUnits = new List<string>{"B", "B", "B", "B", "B", "B"};
+        var counts = stockKeepingUnits.CountSKU();
+        List<PromotionRule> promotionRules = new List<PromotionRule>();
+        Create2OverlappingPromotionRules(promotionRules);
+        // Create Cheap Promotion rule
+        var price = 80;
+        var nItems = 3;
+        var item_i = "B";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
         // Act
+        IEnumerable<int> maxSavingsRulesAppliedCount = counts.MaxSavings(promotionRules);
+
         // Assert
+        IEnumerable<int> expectedRulesAppliedCount = new List<int>{0,0,2};
+        var result = maxSavingsRulesAppliedCount.SequenceEqual(expectedRulesAppliedCount);
+        Assert.True(result, String.Format("Expected rules applied indices'{0}': true, and actual indices '{1}': '{2}'"
+            , String.Join(",", expectedRulesAppliedCount), String.Join(",", maxSavingsRulesAppliedCount), result));
     }
 
     [Test]

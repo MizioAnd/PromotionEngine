@@ -137,8 +137,16 @@ public static class RuleOverlapAlgo
         return overlappingRulesIndices;
     }
 
-    public static void MaxSavings()
+    public static IEnumerable<int> MaxSavings(this IEnumerable<int> countsSKU, IEnumerable<PromotionRule> promotionRules)
     {
+        // Returns true if application of rule maximizes savings in total price
+        // Builds on top of method OptimizeRulesApplied() so it solves also OptimizeRulesAppliedAndMaxSavings(), but MaxSavings() is a better name since OptimizeRulesApplied() 
+        // is more an underlying optimization.
+        // First simple solution: It should first try out all sequence combinations of rules which for n rules amounts to n! combinations
+        // For each combination of rules in promotionRules it could call counts.OptimizeRulesApplied(promotionRules)
+        // Then for each of the returned rulesAppliedCount the total savings get computed
+        // finally the rulesAppliedCount leading to a max for total savings is selected
+        
         throw new NotImplementedException("Please create a test first.");
     }
 
