@@ -1,4 +1,3 @@
-
 namespace Promotion.Engine.Library;
 public static class RuleOverlapAlgo
 {
@@ -15,11 +14,10 @@ public static class RuleOverlapAlgo
     public static IEnumerable<int> OptimizeRulesApplied(this IEnumerable<int> countsSKU, IEnumerable<PromotionRule> promotionRules)
     {
         List<int> promotionRulesAppliedCount = new List<int>(new int[promotionRules.Count()]);
-        List<PromotionRule> promotionRulesApplied = new List<PromotionRule>(promotionRules.Count());
         List<int> countsSKUState = new List<int>(new int[countsSKU.Count()]);
         UpdateCounts(ref countsSKUState, (List<int>)countsSKU);
 
-        IEnumerable<int> countsSKUSubtractedConsumedSKUQuery;
+        IEnumerable<int> countsSKUSubtractedConsumedSKU;
         var idxRule = 0;
         
         foreach (var rule in promotionRules)
@@ -27,13 +25,13 @@ public static class RuleOverlapAlgo
             promotionRulesAppliedCount[promotionRules.ToList<PromotionRule>().IndexOf(rule)] = rule.PromotionOccurences(countsSKUState);
 
             // Reset list with 0s
-            var counstByAppliedRule = new List<int>(new int[promotionRules.Count()]);
-            counstByAppliedRule[idxRule] = rule.PromotionOccurences(countsSKUState);
-            var countsConsumed = counstByAppliedRule.OverlappingSKUConsumptionInRules(promotionRules, countsSKUState);
+            var countsOnlyByAppliedRule = new List<int>(new int[promotionRules.Count()]);
+            countsOnlyByAppliedRule[idxRule] = rule.PromotionOccurences(countsSKUState);
+            var countsConsumed = countsOnlyByAppliedRule.SKUConsumptionInRules(promotionRules, countsSKUState);
 
-            countsSKUSubtractedConsumedSKUQuery = SubtractConsumedCounts(countsSKUState, countsConsumed);
+            countsSKUSubtractedConsumedSKU = SubtractConsumedCounts(countsSKUState, countsConsumed);
 
-            UpdateCounts(ref countsSKUState, countsSKUSubtractedConsumedSKUQuery);
+            UpdateCounts(ref countsSKUState, countsSKUSubtractedConsumedSKU);
             idxRule++;
         }
         return promotionRulesAppliedCount;
@@ -75,7 +73,7 @@ public static class RuleOverlapAlgo
         return overlappingPromotionRulesCount/2;
     }
 
-    public static IEnumerable<int> OverlappingSKUConsumptionInRules(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules, IEnumerable<int> countsSKU)
+    public static IEnumerable<int> SKUConsumptionInRules(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules, IEnumerable<int> countsSKU)
     {
         // Todo: for each applied promotion rule use number of times it was applied in rulesAppliedCount together 
         // with Items member of a promotion to compute sum of SKU consumption that should not be larger than actual countsSKU
@@ -109,9 +107,9 @@ public static class RuleOverlapAlgo
         return appliedRulesSKUcounts;
     }
 
-    public static int OverlappingSKUConsumptionInRulesSum(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules, IEnumerable<int> countsSKU)
+    public static int SKUConsumptionInRulesSum(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules, IEnumerable<int> countsSKU)
     {
-        var appliedRulesSKUcounts = rulesAppliedCount.OverlappingSKUConsumptionInRules(promotionRules, countsSKU);
+        var appliedRulesSKUcounts = rulesAppliedCount.SKUConsumptionInRules(promotionRules, countsSKU);
         var diff = appliedRulesSKUcounts.Select(x => x - countsSKU.ToList().ElementAt(appliedRulesSKUcounts.ToList<int>().IndexOf(x)));
         return diff.Sum();
     }

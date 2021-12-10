@@ -89,7 +89,7 @@ public class UnitTestRuleOverlapAlgo
     }
 
     [Test]
-    public void OverlappingSKUConsumptionInRules_TwoOverlappingPromotionRules_ZeroOverlappingSKUAndBothOverlappingRulesApplied()
+    public void SKUConsumptionInRulesSum_TwoOverlappingPromotionRules_ZeroOverlappingSKUAndBothOverlappingRulesApplied()
     {
         // Arrange
         IEnumerable<string> stockKeepingUnits = new List<string>{"B", "B", "B", "B", "B"};
@@ -100,7 +100,7 @@ public class UnitTestRuleOverlapAlgo
         // Act
         IEnumerable<int> rulesAppliedCount = counts.OptimizeRulesApplied(promotionRules);
         var overlapsRules = rulesAppliedCount.OverlappingPromotionRules(promotionRules);
-        var overlapsSKU = rulesAppliedCount.OverlappingSKUConsumptionInRulesSum(promotionRules, counts);
+        var overlapsSKU = rulesAppliedCount.SKUConsumptionInRulesSum(promotionRules, counts);
 
         // Assert
         var expectedOverlapsRules = 1;
