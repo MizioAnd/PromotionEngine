@@ -28,6 +28,9 @@ public static class PromotionEngineLibrary
     {
         IList<int> counts = new List<int>(new int[ProductList.Count()]);
 
+        if (sku != null && sku.All(x => x == ""))
+            return counts;
+
         // In order to sort by products in ProductList add the elements in ProductList to sku and subtract 1 occurence afterwards
         List<string> skuWithAddedProductList = sku?.ToList<string>() ?? throw new ArgumentNullException("Parameter needs to be set", nameof(sku));
         skuWithAddedProductList.AddRange(ProductList);
