@@ -27,7 +27,7 @@ public static class RuleOverlapAlgo
             // Reset list with 0s
             var countsOnlyByAppliedRule = new List<int>(new int[promotionRules.Count()]);
             countsOnlyByAppliedRule[idxRule] = rule.PromotionOccurences(countsSKUState);
-            var countsConsumed = countsOnlyByAppliedRule.SKUConsumptionInRules(promotionRules, countsSKUState);
+            var countsConsumed = countsOnlyByAppliedRule.SKUConsumptionInRules(promotionRules);
 
             countsSKUSubtractedConsumedSKU = SubtractConsumedCounts(countsSKUState, countsConsumed);
 
@@ -73,10 +73,17 @@ public static class RuleOverlapAlgo
         return overlappingPromotionRulesCount/2;
     }
 
-    public static IEnumerable<int> SKUConsumptionInRules(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules, IEnumerable<int> countsSKU)
+    public static IEnumerable<int> SKUConsumptionInRules(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules)
     {
         // Todo: for each applied promotion rule use number of times it was applied in rulesAppliedCount together 
         // with Items member of a promotion to compute sum of SKU consumption that should not be larger than actual countsSKU
+        if (rulesAppliedCount.All(x => x == 0))
+        {
+            IList<int> counts = new List<int>(new int[PromotionEngineLibrary.ProductList.Count()]);
+            return counts;
+            // throw new ArgumentException("Parameter only has zeros", nameof(rulesAppliedCount));
+        }
+
         int idxRule = 0;
         PromotionRule rule;
         string skuConsumed = "";
@@ -109,7 +116,7 @@ public static class RuleOverlapAlgo
 
     public static int SKUConsumptionInRulesSum(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules, IEnumerable<int> countsSKU)
     {
-        var appliedRulesSKUcounts = rulesAppliedCount.SKUConsumptionInRules(promotionRules, countsSKU);
+        var appliedRulesSKUcounts = rulesAppliedCount.SKUConsumptionInRules(promotionRules);
         var diff = appliedRulesSKUcounts.Select(x => x - countsSKU.ToList().ElementAt(appliedRulesSKUcounts.ToList<int>().IndexOf(x)));
         return diff.Sum();
     }
