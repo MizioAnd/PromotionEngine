@@ -6,6 +6,7 @@ Contents:
 - [How the start of the project was created](#How-the-start-of-the-project-was-created)
 - [Create NuGet pkg for PromotionEngineLibrary](#Create-NuGetpkg-for-PromotionEngineLibrary)
 - [Run and publish console app](#Run-and-publish-console-app)
+- [Create webapi](#Create-webapi)
 - [Deploy project into a Docker container](#Deploy-project-into-a-Docker-container)
 - [Output from running PromotionEngineConsoleApp](#Output-from-running-PromotionEngineConsoleApp)
 
@@ -101,6 +102,28 @@ $ dotnet publish PromotionEngineConsoleApp/PromotionEngineConsoleApp.csproj --co
 To run it,
 
 $ PromotionEngineConsoleApp/bin/Release/net6.0/win-x64/publish/PromotionEngineConsoleApp.exe
+
+## Create webapi
+
+List all .NET templates,
+
+$ dotnet new -l
+
+Create webapi using template,
+
+$ dotnet new webapi -o PromotionEngineAPI
+
+Launch API service by first cd into folder PromotionEngineAPI and then,
+
+$ dotnet watch run
+
+will also launch Swagger UI in your browser.
+
+Test API service by sending http request using curl in terminal and getting an API return 200 code,
+
+$ curl -ki https://localhost:7076/WeatherForecast
+
+where -k is for insecure and no certificate validation during request. Otherwise, test the running service using Swagger UI by clicking button "Try it out".
 
 ## Deploy project into a Docker container
 
