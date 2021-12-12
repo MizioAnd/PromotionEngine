@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackageId>Promotion.Engine.Library</PackageId>
-    <Version>1.2.0</Version>
+    <Version>1.2.1</Version>
     <Authors>strucai</Authors>
     <Description>A simple promotion engine library for a checkout process https://github.com/MizioAnd/PromotionEngine</Description>
     <Company>none</Company>
