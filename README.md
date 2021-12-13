@@ -113,17 +113,17 @@ Create webapi using template,
 
 $ dotnet new webapi -o PromotionEngineAPI
 
-Launch API service by first cd into folder PromotionEngineAPI and then,
+Launch API service by F5 or by first cd into folder PromotionEngineAPI and then,
 
 $ dotnet watch run
 
-will also launch Swagger UI in your browser showing all endpoints.
+will also launch Swagger UI in your browser showing all endpoints at following url,
 
 `https://localhost:<port>/swagger/index.html`
 
 Test API service by sending http request using curl in terminal and getting an API return 200 code,
 
-$ curl -ki https://localhost:`<port>`/WeatherForecast
+$ curl -ik https://localhost:`<port>`/api/promotionengineitems
 
 where -k is for insecure and no certificate validation during request. Otherwise, test the running service using Swagger UI by clicking button "Try it out".
 
@@ -138,13 +138,13 @@ Assuming you have done following steps,
 `dotnet add package Microsoft.EntityFrameworkCore.SqlServer --prerelease`\
 `dotnet tool install -g dotnet-aspnet-codegenerator`
 
-Try out the API with inmemory (DI),
+Try out the API with in-memory (DI),
 
-$ curl -kX POST -H "Content-Type: application/json" https://localhost:7218/api/promotionengineitems -d '{ "TotalPrice": "150", "InputSKU": "A,A,A", "PromotionRules": "none" }' | jq '.'
+$ curl -kX POST -H "Content-Type: application/json" https://localhost:`<port>`/api/promotionengineitems -d '{ "TotalPrice": "150", "InputSKU": "A,A,A", "PromotionRules": "none" }' | jq '.'
 
 Check that the new item was added with the POST API request in browser or just with curl cmd,
 
-$ curl -ik https://localhost:7218/api/promotionengineitems
+$ curl -ik https://localhost:`<port>`/api/promotionengineitems
 
 ## Deploy project into a Docker container
 
