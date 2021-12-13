@@ -117,13 +117,34 @@ Launch API service by first cd into folder PromotionEngineAPI and then,
 
 $ dotnet watch run
 
-will also launch Swagger UI in your browser.
+will also launch Swagger UI in your browser showing all endpoints.
+
+`https://localhost:<port>/swagger/index.html`
 
 Test API service by sending http request using curl in terminal and getting an API return 200 code,
 
-$ curl -ki https://localhost:7076/WeatherForecast
+$ curl -ki https://localhost:`<port>`/WeatherForecast
 
 where -k is for insecure and no certificate validation during request. Otherwise, test the running service using Swagger UI by clicking button "Try it out".
+
+Scaffold a controller,
+
+$ dotnet aspnet-codegenerator controller -name PromotionEngineItemsController -async -api -m PromotionEngineItem -dc PromotionEngineContext -outDir Controllers
+
+Assuming you have done following steps,
+
+`dotnet add package Microsoft.VisualStudio.Web.CodeGeneration.Design --prerelease`\
+`dotnet add package Microsoft.EntityFrameworkCore.Design --prerelease`\
+`dotnet add package Microsoft.EntityFrameworkCore.SqlServer --prerelease`\
+`dotnet tool install -g dotnet-aspnet-codegenerator`
+
+Try out the API with inmemory (DI),
+
+$ curl -kX POST -H "Content-Type: application/json" https://localhost:7218/api/promotionengineitems -d '{ "TotalPrice": "150", "InputSKU": "A,A,A", "PromotionRules": "none" }' | jq '.'
+
+Check that the new item was added with the POST API request in browser or just with curl cmd,
+
+$ curl -ik https://localhost:7218/api/promotionengineitems
 
 ## Deploy project into a Docker container
 
