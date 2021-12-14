@@ -17,7 +17,7 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         _totalPrice = 0;
         PropertyChanged += new PropertyChangedEventHandler(this.ComputeTotalPriceFor3Rules);
         PropertyChanged += new PropertyChangedEventHandler(this.UpdatePromotionRulesCount);
-        Add3PromotionRules();
+        PromotionEngineLibrary.Add3PromotionRules(_promotionRules);
     }
 
     public string? Input 
@@ -75,37 +75,10 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
 
-    private void Add3PromotionRules()
-    {
-        // Create Promotion rule
-        int price = 130;
-        int nItems = 3;
-        string item_i = "A";
-        _promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
-
-        // Create Promotion rule
-        price = 45;
-        nItems = 2;
-        item_i = "B";
-        _promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
-
-        // Create Promotion rule
-        price = 30;
-        item_i = "C";
-        string item_j = "D";
-        _promotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
-    }
-
     private void ComputeTotalPriceFor3Rules(object? sender, PropertyChangedEventArgs e)
     {
-        try {
-            if (string.IsNullOrEmpty(_input))
-                throw new ArgumentNullException("Parameter needs to be set", nameof(_input));
-            stockKeepingUnits = new List<string>(_input.Split(","));
-            _counts = stockKeepingUnits.CountSKU();
-            _totalPrice = _counts.TotalPriceUsingPromotionRules(_promotionRules);
-
-        } catch (ArgumentNullException) {}
+        // TODO: implement api POST request instead that takes serialized json input
+        _totalPrice = PromotionEngineLibrary.TotalPriceFromInput(_input, _promotionRules);
     }
 
     private void UpdatePromotionRulesCount(object? sender, PropertyChangedEventArgs e)

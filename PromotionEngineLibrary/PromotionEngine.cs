@@ -137,7 +137,7 @@ public static class PromotionEngineLibrary
         return priceWithoutPromotion - totalPromotionSaving;
     }
 
-    private static void Add3PromotionRules(List<PromotionRule> promotionRules)
+    public static void Add3PromotionRules(List<PromotionRule> promotionRules)
     {
         // Create Promotion rule
         int nItems = 3;
@@ -158,7 +158,7 @@ public static class PromotionEngineLibrary
         promotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
     }
 
-    public static int TotalPriceFromInput(string inputSKU)
+    public static int TotalPriceFromInput(string inputSKU, List<PromotionRule> promotionRules)
     {
         try {
             if (string.IsNullOrEmpty(inputSKU))
@@ -166,12 +166,10 @@ public static class PromotionEngineLibrary
             var stockKeepingUnits = new List<string>(inputSKU.Split(","));
             var _counts = stockKeepingUnits.CountSKU();
             
-            List<PromotionRule> _promotionRules = new List<PromotionRule>();
-            Add3PromotionRules(_promotionRules);
-            var _totalPrice = _counts.TotalPriceUsingPromotionRules(_promotionRules);
+            var _totalPrice = _counts.TotalPriceUsingPromotionRules(promotionRules);
             return _totalPrice;
         } catch (ArgumentNullException) {}
-        
+
         return 0;
     }
 }

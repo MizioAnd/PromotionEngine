@@ -79,7 +79,10 @@ namespace PromotionEngineAPI.Controllers
         public async Task<ActionResult<PromotionEngineItem>> PostPromotionEngineItem(PromotionEngineItem promotionEngineItem)
         {
             // Todo: Based on InputSKU compute the total price and store in in-memory database
-            promotionEngineItem.TotalPrice = PromotionEngineLibrary.TotalPriceFromInput(promotionEngineItem.InputSKU);
+            List<PromotionRule> _promotionRules = new List<PromotionRule>();
+            PromotionEngineLibrary.Add3PromotionRules(_promotionRules);
+
+            promotionEngineItem.TotalPrice = PromotionEngineLibrary.TotalPriceFromInput(promotionEngineItem.InputSKU, _promotionRules);
 
             _context.PromotionEngineItems.Add(promotionEngineItem);
             await _context.SaveChangesAsync();
