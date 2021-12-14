@@ -146,6 +146,8 @@ Check that the new item was added with the POST API request in browser or just w
 
 $ curl -ik https://localhost:`<port>`/api/promotionengineitems
 
+There are two GET endpoints one gets all entries in the in-memory database `/api/promotionengineitems` and the other `/api/promotionengineitems/id_of_entry` returns only the entry with value for id_of_entry e.g. `/api/promotionengineitems/1` returns the one with id=1.
+
 ## Deploy project into a Docker container
 
 For Docker deploy place yourself one level above the folder of the this cloned project and run,
