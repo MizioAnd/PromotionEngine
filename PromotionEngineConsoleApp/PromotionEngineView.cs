@@ -36,6 +36,12 @@ public class PromotionEngineView
                 Console.WriteLine($"Your input cart: {Input}");
                 Console.WriteLine();
                 
+                while (!promotionEngineViewModel.HasPOSTFinished) {}
+                promotionEngineViewModel.HasPOSTFinished = false;
+
+                if (promotionEngineViewModel.TotalPrice == 0)
+                    throw new ArgumentOutOfRangeException();
+
                 Console.WriteLine("Your total price: {0}", promotionEngineViewModel.TotalPrice);
                 Console.WriteLine();
                 Console.WriteLine(("").PadRight(20, '-'));

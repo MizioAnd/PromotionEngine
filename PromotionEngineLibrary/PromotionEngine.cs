@@ -136,4 +136,40 @@ public static class PromotionEngineLibrary
 
         return priceWithoutPromotion - totalPromotionSaving;
     }
+
+    public static void Add3PromotionRules(List<PromotionRule> promotionRules)
+    {
+        // Create Promotion rule
+        int nItems = 3;
+        int price = nItems*PromotionEngineLibrary.PriceA - PromotionEngineLibrary.Promotion3AsSaving;
+        string item_i = "A";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
+        // Create Promotion rule
+        nItems = 2;
+        var priceRule2Bs = nItems*PromotionEngineLibrary.PriceB - PromotionEngineLibrary.Promotion2BsSaving;
+        item_i = "B";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, priceRule2Bs);
+
+        // Create Promotion rule
+        price = PromotionEngineLibrary.PromotionCandD;
+        item_i = "C";
+        string item_j = "D";
+        promotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
+    }
+
+    public static int TotalPriceFromInput(string inputSKU, List<PromotionRule> promotionRules)
+    {
+        try {
+            if (string.IsNullOrEmpty(inputSKU))
+                throw new ArgumentNullException("Parameter needs to be set", nameof(inputSKU));
+            var stockKeepingUnits = new List<string>(inputSKU.Split(","));
+            var _counts = stockKeepingUnits.CountSKU();
+            
+            var _totalPrice = _counts.TotalPriceUsingPromotionRules(promotionRules);
+            return _totalPrice;
+        } catch (ArgumentNullException) {}
+
+        return 0;
+    }
 }

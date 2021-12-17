@@ -8,7 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Promotion.Engine.Library" Version="1.2.1" />
+    <!-- <PackageReference Include="Promotion.Engine.Library" Version="1.2.1" /> -->
+    <ProjectReference Include="..\PromotionEngineLibrary\PromotionEngineLibrary.csproj" />
+    <ProjectReference Include="..\PromotionEngineAPI\PromotionEngineAPI.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
   </ItemGroup>
 
 </Project>
