@@ -71,7 +71,7 @@ Which will download the package from https://www.nuget.org/packages/Promotion.En
 
 ## Run and publish console app
 
-Run the console app,
+Run the console app (assuming you have a running PromotionEngineAPI found [here](#Create-webapi)),
 
 $ dotnet run --project PromotionEngineConsoleApp/PromotionEngineConsoleApp.csproj
 
