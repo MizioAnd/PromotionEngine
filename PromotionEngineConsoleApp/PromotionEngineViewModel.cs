@@ -10,8 +10,6 @@ namespace Promotion.Engine.ConsoleApp;
 public class PromotionEngineViewModel : INotifyPropertyChanged
 {
     private List<PromotionRule> _promotionRules = new List<PromotionRule>();
-    // private IEnumerable<string>? stockKeepingUnits;
-    // private IEnumerable<int>? _counts;
     private int _totalPrice;
     private static string? _input;
     private HttpClient _client;
@@ -20,7 +18,6 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
     public PromotionEngineViewModel()
     {
         _totalPrice = 0;
-        // PropertyChanged += new PropertyChangedEventHandler(this.ComputeTotalPriceFor3RulesAsync);
         PropertyChanged += async (s, e) => await ComputeTotalPriceFor3RulesAsync(s, e);
         PropertyChanged += new PropertyChangedEventHandler(this.UpdatePromotionRulesCount);
         PromotionEngineLibrary.Add3PromotionRules(_promotionRules);
@@ -92,10 +89,6 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
 
     private async Task ComputeTotalPriceFor3RulesAsync(object? sender, PropertyChangedEventArgs e)
     {
-        // TODO: implement api POST request instead that takes serialized json input
-
-        // POST api to compute TotalPrice
-        // var url = "https://localhost:7218/api/promotionengineitems/";
         try {
             // Todo: implement that promotionrules gets passed as class member assignment in post ctor call PromotionEngineItem()
             var promotionEngineItem = new PromotionEngineItem(){TotalPrice = 0, InputSKU = _input, PromotionRules = "none"};
@@ -113,18 +106,6 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
             _totalPrice = 0;
             _hasPOSTFinished = true;
         }
-
-        // GET to retrieve computed TotalPrice
-        // response = await client.GetAsync(_url);
-        // response.EnsureSuccessStatusCode();
-        // var resp = await response.Content.ReadAsStringAsync();
-        // List<PromotionEngineItem> promotionEngineItems = JsonConvert.DeserializeObject<List<PromotionEngineItem>>(result);
-
-        // Select the one with correct id corresponding to above POST request
-        // TODO: we need to retrieve the record with correct ID.
-        // _totalPrice = promotionEngineItems.LastOrDefault().TotalPrice;
-
-        // _totalPrice = PromotionEngineLibrary.TotalPriceFromInput(_input, _promotionRules);
     }
 
     private void CreateHttpConnection()
