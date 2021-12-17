@@ -119,13 +119,17 @@ $ dotnet watch run
 
 will also launch Swagger UI in your browser showing all endpoints at following url,
 
-`https://localhost:<port>/swagger/index.html`
+`http://localhost:<port>/swagger/index.html`
+
+Or just run the API like if it was an app,
+
+$ dotnet run --project PromotionEngine/PromotionEngineAPI/PromotionEngineAPI.csproj &
 
 Test API service by sending http request using curl in terminal and getting an API return 200 code,
 
-$ curl -ik https://localhost:`<port>`/api/promotionengineitems
+$ curl -i http://localhost:`<port>`/api/promotionengineitems
 
-where -k is for insecure and no certificate validation during request. Otherwise, test the running service using Swagger UI by clicking button "Try it out".
+where -k would be included for insecure and no certificate validation during request when using https. Otherwise, test the running service using Swagger UI by clicking button "Try it out".
 
 Scaffold a controller,
 
@@ -140,11 +144,11 @@ Assuming you have done following steps,
 
 Try out the API with in-memory (DI),
 
-$ curl -kX POST -H "Content-Type: application/json" https://localhost:`<port>`/api/promotionengineitems -d '{ "TotalPrice": "150", "InputSKU": "A,A,A", "PromotionRules": "none" }' | jq '.'
+$ curl -X POST -H "Content-Type: application/json" http://localhost:`<port>`/api/promotionengineitems -d '{ "TotalPrice": "150", "InputSKU": "A,A,A", "PromotionRules": "none" }' | jq '.'
 
 Check that the new item was added with the POST API request in browser or just with curl cmd,
 
-$ curl -ik https://localhost:`<port>`/api/promotionengineitems
+$ curl -i http://localhost:`<port>`/api/promotionengineitems
 
 There are two GET endpoints one gets all entries in the in-memory database `/api/promotionengineitems` and the other `/api/promotionengineitems/id_of_entry` returns only the entry with value for id_of_entry e.g. `/api/promotionengineitems/1` returns the one with id=1.
 
