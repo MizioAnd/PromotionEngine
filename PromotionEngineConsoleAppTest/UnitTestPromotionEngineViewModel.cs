@@ -75,11 +75,6 @@ public class UnitTestPromotionEngineViewModel
         promotionEngineViewModel.PromotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Act
-        // Same input to API cannot be passed immediately after, but any number of "" can be passed consequetively to API
-        promotionEngineViewModel.Input = "";
-        while (!promotionEngineViewModel.HasPOSTFinished) {}
-        promotionEngineViewModel.HasPOSTFinished = false;
-
         promotionEngineViewModel.Input = input;
         while (!promotionEngineViewModel.HasPOSTFinished) {}
         promotionEngineViewModel.HasPOSTFinished = false;
@@ -120,20 +115,10 @@ public class UnitTestPromotionEngineViewModel
         var promotionEngineViewModel = new PromotionEngineViewModel();
 
         // Act
-        // Reset API with "" input since previous test had same input
-        promotionEngineViewModel.Input = "";
-        while (!promotionEngineViewModel.HasPOSTFinished) {}
-        promotionEngineViewModel.HasPOSTFinished = false;
-
         promotionEngineViewModel.Input = input;
         while (!promotionEngineViewModel.HasPOSTFinished) {}
         promotionEngineViewModel.HasPOSTFinished = false;
         var totalPrice = promotionEngineViewModel.TotalPrice;
-
-        // Reset API with "" input since previous test had same input
-        promotionEngineViewModel.Input = "";
-        while (!promotionEngineViewModel.HasPOSTFinished) {}
-        promotionEngineViewModel.HasPOSTFinished = false;
 
         promotionEngineViewModel.Input = input;
         while (!promotionEngineViewModel.HasPOSTFinished) {}
