@@ -30,11 +30,8 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         get { return _input; }
         set 
         {
-            if (value != this.Input)
-            {
-                _input = value;
-                NotifyPropertyChanged();
-            }
+            _input = value;
+            NotifyPropertyChanged();
         } 
     }
 
