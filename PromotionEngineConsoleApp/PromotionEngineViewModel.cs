@@ -30,8 +30,12 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         get { return _input; }
         set 
         {
-            _input = value;
-            NotifyPropertyChanged();
+            if (value != this.Input || _totalPrice == 0)
+            {
+                _input = value;
+                NotifyPropertyChanged();
+            } else
+                _hasPOSTFinished = true;
         } 
     }
 
