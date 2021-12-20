@@ -21,7 +21,6 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         PropertyChanged += async (s, e) => await ComputeTotalPriceFor3RulesAsync(s, e);
         PropertyChanged += new PropertyChangedEventHandler(this.UpdatePromotionRulesCount);
         PromotionEngineLibrary.Add3PromotionRules(_promotionRules);
-        // using var client = new HttpClient();
         CreateHttpConnection();
     }
 
@@ -57,7 +56,6 @@ public class PromotionEngineViewModel : INotifyPropertyChanged
         get { return _promotionRules; }
         set {;}
     }
-
 
     public int TotalPrice
     {
