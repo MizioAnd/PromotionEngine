@@ -145,8 +145,43 @@ public static class RuleOverlapAlgo
         // For each combination of rules in promotionRules it could call counts.OptimizeRulesApplied(promotionRules)
         // Then for each of the returned rulesAppliedCount the total savings get computed
         // finally the rulesAppliedCount leading to a max for total savings is selected
-        
-        throw new NotImplementedException("Please create a test first.");
+
+        var permutationsRules = GetPermutations<PromotionRule>(promotionRules, promotionRules.Count());
+
+        var maxSavings = new List<int>(new int[permutationsRules.Count()]);
+
+        var ite = 0;
+        foreach (var rulesPerm in permutationsRules)
+        {
+            var rulesAppliedCount = countsSKU.OptimizeRulesApplied(rulesPerm);
+            var jte = 0;
+            foreach (var count in rulesAppliedCount)
+            {
+                maxSavings[ite] += rulesPerm.ToList<PromotionRule>()[jte].Saving*count;
+                jte++;
+            }
+            ite++;
+        }
+
+        var maxIdx = maxSavings.IndexOf(maxSavings.Max());
+        var rulePermMaxSaving = permutationsRules.ToList<IEnumerable<PromotionRule>>()[maxIdx];
+        var rulesAppliedCountMaxSavings = countsSKU.OptimizeRulesApplied(rulePermMaxSaving);
+        var inverseIdxRulesQuery = rulePermMaxSaving.Select(rule => promotionRules.ToList<PromotionRule>().IndexOf(rule)).ToList<int>();
+        var rulesAppliedCountMaxSavingsOrdered = new List<int>(new int[rulesAppliedCountMaxSavings.Count()]);
+        ite = 0;
+        foreach (var count in rulesAppliedCountMaxSavings)
+        {
+            rulesAppliedCountMaxSavingsOrdered[inverseIdxRulesQuery[ite]] = count;
+            ite++;
+        }
+        return rulesAppliedCountMaxSavingsOrdered;
+    }
+
+    public static IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length)
+    {
+        if (length == 1)
+            return list.Select(t => new T[]{ t });
+        return GetPermutations(list, length - 1).SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Concat(new T[] { t2 }));
     }
 
     public static void OptimizeRulesAppliedAndMaxSavings()

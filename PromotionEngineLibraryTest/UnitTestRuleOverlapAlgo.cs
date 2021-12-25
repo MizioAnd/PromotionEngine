@@ -139,7 +139,7 @@ public class UnitTestRuleOverlapAlgo
         Create2OverlappingPromotionRules(promotionRules);
         // Create Cheapest Promotion rule
         var nItems = 3;
-        var price = nItems*PromotionEngineLibrary.PriceA - PromotionEngineLibrary.Promotion3AsSaving/2;
+        var price = nItems*PromotionEngineLibrary.PriceA - PromotionEngineLibrary.Promotion3AsSaving/3*4;
         var item_i = "A";
         promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
@@ -166,10 +166,41 @@ public class UnitTestRuleOverlapAlgo
         IEnumerable<int> maxSavingsRulesAppliedCount = counts.MaxSavings(promotionRules);
 
         // Assert
-        IEnumerable<int> expectedRulesAppliedCount = new List<int>{1,1};
+        IEnumerable<int> expectedRulesAppliedCount = new List<int>{1,2};
         var result = maxSavingsRulesAppliedCount.SequenceEqual(expectedRulesAppliedCount);
         Assert.True(result, String.Format("Expected rules applied indices'{0}': true, and actual indices '{1}': '{2}'"
             , String.Join(",", expectedRulesAppliedCount), String.Join(",", maxSavingsRulesAppliedCount), result));
+    }
+
+    private int Factorials(int number)
+    {
+        var result = 1;
+        for ( int x = 1; x <= number; x++)
+            result *= x;
+        return result;
+    }
+
+    private int FactorialsRecursive(int number)
+    {
+        if (number == 1)
+            return 1;
+        return number*FactorialsRecursive(number - 1);
+    }
+
+    [Test]
+    public void GetPermutations_RangeOf3Integers_CountOfAllPermutationsOf3Integers()
+    {
+        // Arrange
+        var input = Enumerable.Range(1, 3);
+
+        // Act
+        var permutationsQuery = RuleOverlapAlgo.GetPermutations(input, input.Count());
+
+        // Assert
+        var expected = FactorialsRecursive(input.Count());
+        var permutations = permutationsQuery.Count();
+        var result = permutations == expected;
+        Assert.True(result, String.Format("Expected permutations '{0}': true, and actual permuations count '{1}': '{2}'", expected, permutations, result));
     }
 
     [Test]
