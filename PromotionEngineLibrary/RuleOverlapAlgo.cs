@@ -75,8 +75,7 @@ public static class RuleOverlapAlgo
 
     public static IEnumerable<int> SKUConsumptionInRules(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules)
     {
-        // Todo: for each applied promotion rule use number of times it was applied in rulesAppliedCount together 
-        // with Items member of a promotion to compute sum of SKU consumption that should not be larger than actual countsSKU
+        
         if (rulesAppliedCount.All(x => x == 0))
         {
             IList<int> counts = new List<int>(new int[PromotionEngineLibrary.ProductList.Count()]);
@@ -84,6 +83,14 @@ public static class RuleOverlapAlgo
             // throw new ArgumentException("Parameter only has zeros", nameof(rulesAppliedCount));
         }
 
+        var skuConsumed = TranslateRulesAppliedCountToSKUs(rulesAppliedCount, promotionRules);
+        var stockKeepingUnits = new List<string>(skuConsumed.Split(","));
+        var appliedRulesSKUcounts = stockKeepingUnits.CountSKU();
+        return appliedRulesSKUcounts;
+    }
+
+    private static string TranslateRulesAppliedCountToSKUs(IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules)
+    {
         int idxRule = 0;
         PromotionRule rule;
         string skuConsumed = "";
@@ -93,25 +100,29 @@ public static class RuleOverlapAlgo
         {
             if (ruleAppliedCount > 0)
             {
-                rule = promotionRules.ToList<PromotionRule>().ElementAt(idxRule);
-
-                ruleItems = String.Join(",", rule.Items.Where(x => x != null));
-
-                var multiplyFactor = ruleAppliedCount;
-                if (rule.Items.Contains(null))
-                    multiplyFactor *= rule.IdxProduct_j;
-
-                string ruleSkuConsumed = "";
-                foreach (var ite in Enumerable.Range(0, multiplyFactor))
-                    ruleSkuConsumed = String.Format("{0},{1}", ruleSkuConsumed, ruleItems);
-                skuConsumed = String.Format("{0},{1}", skuConsumed, ruleSkuConsumed);
+                skuConsumed = CountToSKU(promotionRules, idxRule, out rule, skuConsumed, out ruleItems, ruleAppliedCount);
             }
             idxRule++;
         }
         skuConsumed = String.Join(",", skuConsumed.Split(",").Where(x => x != ""));
-        var stockKeepingUnits = new List<string>(skuConsumed.Split(","));
-        var appliedRulesSKUcounts = stockKeepingUnits.CountSKU();
-        return appliedRulesSKUcounts;
+        return skuConsumed;
+    }
+
+    private static string CountToSKU(IEnumerable<PromotionRule> promotionRules, int idxRule, out PromotionRule rule, string skuConsumed, out string ruleItems, int ruleAppliedCount)
+    {
+        rule = promotionRules.ToList<PromotionRule>().ElementAt(idxRule);
+
+        ruleItems = String.Join(",", rule.Items.Where(x => x != null));
+
+        var multiplyFactor = ruleAppliedCount;
+        if (rule.Items.Contains(null))
+            multiplyFactor *= rule.IdxProduct_j;
+
+        string ruleSkuConsumed = "";
+        foreach (var ite in Enumerable.Range(0, multiplyFactor))
+            ruleSkuConsumed = String.Format("{0},{1}", ruleSkuConsumed, ruleItems);
+        skuConsumed = String.Format("{0},{1}", skuConsumed, ruleSkuConsumed);
+        return skuConsumed;
     }
 
     public static int SKUConsumptionInRulesSum(this IEnumerable<int> rulesAppliedCount, IEnumerable<PromotionRule> promotionRules, IEnumerable<int> countsSKU)
@@ -137,9 +148,75 @@ public static class RuleOverlapAlgo
         return overlappingRulesIndices;
     }
 
-    public static void MaxSavings()
+    public static IEnumerable<int> MaxSavings(this IEnumerable<int> countsSKU, IEnumerable<PromotionRule> promotionRules)
     {
-        throw new NotImplementedException("Please create a test first.");
+        var permutationsRules = GetPermutations<PromotionRule>(promotionRules, promotionRules.Count());
+
+        List<int> maxSavings;
+        SavingsForAllPermutationsOfRules(countsSKU, permutationsRules, out maxSavings);
+
+        IEnumerable<PromotionRule> rulePermMaxSaving = RulePermutationMaxSavings(permutationsRules, maxSavings);
+        var rulesAppliedCountMaxSavings = countsSKU.OptimizeRulesApplied(rulePermMaxSaving);
+
+        List<int> rulesAppliedCountMaxSavingsOrdered = RulesAppliedCountOrdered(promotionRules, rulePermMaxSaving, rulesAppliedCountMaxSavings);
+
+        return rulesAppliedCountMaxSavingsOrdered;
+    }
+
+    public static IEnumerable<PromotionRule> RulePermutationMaxSavings(IEnumerable<IEnumerable<PromotionRule>> permutationsRules, List<int> maxSavings)
+    {
+        var maxIdx = maxSavings.IndexOf(maxSavings.Max());
+        var rulePermMaxSaving = permutationsRules.ToList<IEnumerable<PromotionRule>>()[maxIdx];
+        return rulePermMaxSaving;
+    }
+
+    private static List<int> RulesAppliedCountOrdered(IEnumerable<PromotionRule> promotionRulesOrdered, IEnumerable<PromotionRule> rulePermutationUnordered, IEnumerable<int> rulesAppliedCountMaxSavings)
+    {
+        var inverseIdxRulesQuery = rulePermutationUnordered.Select(rule => promotionRulesOrdered.ToList<PromotionRule>().IndexOf(rule)).ToList<int>();
+        var rulesAppliedCountOrdered = new List<int>(new int[rulesAppliedCountMaxSavings.Count()]);
+        var ite = 0;
+        foreach (var count in rulesAppliedCountMaxSavings)
+        {
+            rulesAppliedCountOrdered[inverseIdxRulesQuery[ite]] = count;
+            ite++;
+        }
+        return rulesAppliedCountOrdered;
+    }
+
+    public static void SavingsForAllPermutationsOfRules(IEnumerable<int> countsSKU, IEnumerable<IEnumerable<PromotionRule>> permutationsRules, out List<int> maxSavings)
+    {
+        maxSavings = new List<int>(new int[permutationsRules.Count()]);
+        var ite = 0;
+        int savings;
+        foreach (var rulesPerm in permutationsRules)
+        {
+            savings = 0;
+            SavingsOfRulePermuation(countsSKU, out savings, rulesPerm);
+            maxSavings[ite] = savings;
+            ite++;
+        }
+    }
+
+    public static void SavingsOfRulePermuation(IEnumerable<int>? countsSKU, out int savings, IEnumerable<PromotionRule> rulesPerm)
+    {
+        if (countsSKU == null)
+            throw new ArgumentNullException("Parameter needs to be set", nameof(countsSKU));
+
+        var rulesAppliedCount = countsSKU.OptimizeRulesApplied(rulesPerm);
+        savings = 0;
+        var jte = 0;
+        foreach (var count in rulesAppliedCount)
+        {
+            savings += rulesPerm.ToList<PromotionRule>()[jte].Saving * count;
+            jte++;
+        }
+    }
+
+    public static IEnumerable<IEnumerable<T>> GetPermutations<T>(IEnumerable<T> list, int length)
+    {
+        if (length == 1)
+            return list.Select(t => new T[]{ t });
+        return GetPermutations(list, length - 1).SelectMany(t => list.Where(e => !t.Contains(e)), (t1, t2) => t1.Concat(new T[] { t2 }));
     }
 
     public static void OptimizeRulesAppliedAndMaxSavings()

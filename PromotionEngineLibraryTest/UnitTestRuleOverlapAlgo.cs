@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using Promotion.Engine.Library;
+using System.Linq;
 
 namespace Promotion.Engine.UnitTests.Library;
 [TestFixture]
@@ -15,33 +16,50 @@ public class UnitTestRuleOverlapAlgo
     private static void Create2OverlappingPromotionRules(List<PromotionRule> promotionRules)
     {
         // Create Promotion rule
-        int price = 130;
         int nItems = 3;
-        string item_i = "B";
+        int price = nItems*PromotionEngineLibrary.PriceA - PromotionEngineLibrary.Promotion3AsSaving;
+        string item_i = "A";
         promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
         // Create Promotion rule
-        price = 90;
         nItems = 2;
-        item_i = "B";
+        price = nItems*PromotionEngineLibrary.PriceA - PromotionEngineLibrary.Promotion3AsSaving/2;
+        item_i = "A";
         promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+    }
+
+    private static void Create2OverlappingButDifferentTypePromotionRules(List<PromotionRule> promotionRules)
+    {
+        // Create Promotion rule
+        var nItems = 2;
+        var priceRule2Bs = nItems*PromotionEngineLibrary.PriceB - PromotionEngineLibrary.Promotion2BsSaving;
+        var item_i = "B";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, priceRule2Bs);
+
+        // Create Promotion rule
+        // Todo: derive price that Create promotion such that the price for B and C is such that the rule must be applied 2 times in BBBBCC
+        // and that 2B rule is applied once. Edge cases BC rule could be such that it was always cheaper to apply that one since the single B price 
+        // is less than single B price in 2B rule or BC rule could be applied always if C unit has lower price than without promotion.
+        var price = PromotionEngineLibrary.PriceB + PromotionEngineLibrary.PriceC - Math.Max(PromotionEngineLibrary.PriceB, PromotionEngineLibrary.PriceC)/2;
+        item_i = "B";
+        string item_j = "C";
+        promotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
     }
 
     private static void Create2NonOverlappingPromotionRules(List<PromotionRule> promotionRules)
     {
         // Create Promotion rule
-        int price = 130;
-        int nItems = 3;
-        string item_i = "A";
-        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+        var nItems = 2;
+        var priceRule2Bs = nItems*PromotionEngineLibrary.PriceB - PromotionEngineLibrary.Promotion2BsSaving;
+        var item_i = "B";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, priceRule2Bs);
 
         // Create Promotion rule
-        price = 30;
+        var price = PromotionEngineLibrary.PromotionCandD;
         item_i = "C";
         string item_j = "D";
         promotionRules.CreatePromotion2ItemsForFixedPrice(item_i, item_j, price);
     }
-
 
     [Test]
     public void NonOptimizeRulesApplied_TwoOverlappingPromotionRules_OneOverlap()
@@ -83,7 +101,7 @@ public class UnitTestRuleOverlapAlgo
         var overlaps = rulesAppliedCount.OverlappingPromotionRules(promotionRules);
 
         // Assert
-        var expectedOverlaps = 1;
+        var expectedOverlaps = 0;
         var result = overlaps == expectedOverlaps;
         Assert.True(result, String.Format("Expected number of times multiple rules overlapped '{0}': true, and actual overlap count '{1}': '{2}'", expectedOverlaps, overlaps, result));
     }
@@ -92,7 +110,7 @@ public class UnitTestRuleOverlapAlgo
     public void SKUConsumptionInRulesSum_TwoOverlappingPromotionRules_ZeroOverlappingSKUAndBothOverlappingRulesApplied()
     {
         // Arrange
-        IEnumerable<string> stockKeepingUnits = new List<string>{"B", "B", "B", "B", "B"};
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "A", "A"};
         var counts = stockKeepingUnits.CountSKU();
         List<PromotionRule> promotionRules = new List<PromotionRule>();
         Create2OverlappingPromotionRules(promotionRules);
@@ -110,24 +128,106 @@ public class UnitTestRuleOverlapAlgo
     }
 
     [Test]
-    public void MaxSavings_TwoOverlappingPromotionRules_HigherSavingsThanForRandomSelectionOfAppliedOverlappingPromotionRules()
+    public void MaxSavings_ThreeOverlappingPromotionRules_HigherSavingsThanForRandomSelectionOfAppliedOverlappingPromotionRules()
     {
         // Todo: maximize savings and find x_0 which satifies f(x_0)=0 and g(x_0)=max(g(x)) where g maps to total amount saved
 
         // Arrange
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "A", "A", "A"};
+        var counts = stockKeepingUnits.CountSKU();
+        List<PromotionRule> promotionRules = new List<PromotionRule>();
+        Create2OverlappingPromotionRules(promotionRules);
+        // Create Cheapest Promotion rule
+        var nItems = 3;
+        var price = nItems*PromotionEngineLibrary.PriceA - PromotionEngineLibrary.Promotion3AsSaving/3*4;
+        var item_i = "A";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
         // Act
+        IEnumerable<int> maxSavingsRulesAppliedCount = counts.MaxSavings(promotionRules);
+
         // Assert
+        IEnumerable<int> expectedRulesAppliedCount = new List<int>{0,0,2};
+        var result = maxSavingsRulesAppliedCount.SequenceEqual(expectedRulesAppliedCount);
+        Assert.True(result, String.Format("Expected rules applied indices'{0}': true, and actual indices '{1}': '{2}'"
+            , String.Join(",", expectedRulesAppliedCount), String.Join(",", maxSavingsRulesAppliedCount), result));
     }
 
     [Test]
-    public void OptimizeRulesAppliedAndMaxSavings_TwoOverlappingPromotionRules_HigherSavingsThanForMaxSavingsWithAppliedOverlappingPromotionRules()
+    public void MaxSavings_TwoOverlappingDifferentTypePromotionRules_HigherSavingsThanForRandomSelectionOfAppliedOverlappingPromotionRules()
     {
-        // Todo: Create algo that both satifies 0 overlapping promotion rules applied and max savings corresponding to accumulated
-        // savings from applied promotion rules
-
         // Arrange
-        // Act
-        // Assert
+        IEnumerable<string> stockKeepingUnits = new List<string>{"B", "B", "B", "B", "C", "C"};
+        var counts = stockKeepingUnits.CountSKU();
+        List<PromotionRule> promotionRules = new List<PromotionRule>();
+        Create2OverlappingButDifferentTypePromotionRules(promotionRules);
 
+        // Act
+        IEnumerable<int> maxSavingsRulesAppliedCount = counts.MaxSavings(promotionRules);
+
+        // Assert
+        IEnumerable<int> expectedRulesAppliedCount = new List<int>{1,2};
+        var result = maxSavingsRulesAppliedCount.SequenceEqual(expectedRulesAppliedCount);
+        Assert.True(result, String.Format("Expected rules applied indices'{0}': true, and actual indices '{1}': '{2}'"
+            , String.Join(",", expectedRulesAppliedCount), String.Join(",", maxSavingsRulesAppliedCount), result));
+    }
+
+    private int Factorials(int number)
+    {
+        var result = 1;
+        for ( int x = 1; x <= number; x++)
+            result *= x;
+        return result;
+    }
+
+    private int FactorialsRecursive(int number)
+    {
+        if (number == 1)
+            return 1;
+        return number*FactorialsRecursive(number - 1);
+    }
+
+    [Test]
+    public void GetPermutations_RangeOf3Integers_CountOfAllPermutationsOf3Integers()
+    {
+        // Arrange
+        var input = Enumerable.Range(1, 3);
+
+        // Act
+        var permutationsQuery = RuleOverlapAlgo.GetPermutations(input, input.Count());
+
+        // Assert
+        var expected = FactorialsRecursive(input.Count());
+        var permutations = permutationsQuery.Count();
+        var result = permutations == expected;
+        Assert.True(result, String.Format("Expected permutations '{0}': true, and actual permuations count '{1}': '{2}'", expected, permutations, result));
+    }
+
+    [Test]
+    public void TotalPriceUsingPromotionRules_MaxSavingsAlgoApplied_LowestTotatPriceForMaxSavingsAlgo()
+    {
+        // Arrange
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "A", "A", "A"};
+        var counts = stockKeepingUnits.CountSKU();
+        List<PromotionRule> promotionRules = new List<PromotionRule>();
+        Create2OverlappingPromotionRules(promotionRules);
+        // Create Cheapest Promotion rule
+        var nItems = 3;
+        var price = nItems*PromotionEngineLibrary.PriceA - PromotionEngineLibrary.Promotion3AsSaving/3*4;
+        var item_i = "A";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
+
+        var permutationsRules = RuleOverlapAlgo.GetPermutations<PromotionRule>(promotionRules, promotionRules.Count());
+        List<int> maxSavings;
+        RuleOverlapAlgo.SavingsForAllPermutationsOfRules(counts, permutationsRules, out maxSavings);
+        IEnumerable<PromotionRule> rulePermMaxSaving = RuleOverlapAlgo.RulePermutationMaxSavings(permutationsRules, maxSavings);
+
+        // Act
+        var totalPrice = counts.TotalPriceUsingPromotionRules(promotionRules);
+        var totalPriceWithMaxSavingsPermutation = counts.TotalPriceUsingPromotionRules(rulePermMaxSaving);
+
+        // Assert
+        bool result = totalPriceWithMaxSavingsPermutation < totalPrice;
+        Assert.IsTrue(result, String.Format("total price with MaxSavings '{0}' < '{1}': true, but actual price '{1}': {2}", totalPriceWithMaxSavingsPermutation, totalPrice, result));
     }
 }
