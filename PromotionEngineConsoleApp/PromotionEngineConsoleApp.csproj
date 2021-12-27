@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Promotion.Engine.Library" Version="1.3.0" />
+    <PackageReference Include="Promotion.Engine.Library" Version="1.4.0" />
     <!-- <ProjectReference Include="..\PromotionEngineLibrary\PromotionEngineLibrary.csproj" /> -->
     <ProjectReference Include="..\PromotionEngineAPI\PromotionEngineAPI.csproj" />
   </ItemGroup>
