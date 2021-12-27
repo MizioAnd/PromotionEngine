@@ -121,20 +121,21 @@ public static class PromotionEngineLibrary
 
     public static int TotalPriceUsingPromotionRules(this IEnumerable<int>? counts, IEnumerable<PromotionRule> promotionRules)
     {
+        int priceWithoutPromotion = TotalPriceNoPromotions(counts);
+        int savings;
+        RuleOverlapAlgo.SavingsOfRulePermuation(counts, out savings, promotionRules);
+        return priceWithoutPromotion - savings;
+    }
+
+    public static int TotalPriceNoPromotions(IEnumerable<int>? counts)
+    {
         int priceWithoutPromotion = 0;
         if (counts == null)
-            throw new ArgumentNullException("Parameter needs to be set", nameof(counts));   
-        
+            throw new ArgumentNullException("Parameter needs to be set", nameof(counts));
+
         foreach (var ite in Enumerable.Range(0, counts.Count()))
-            priceWithoutPromotion += counts.ElementAt(ite)*Prices.ElementAt(ite);
-
-        var totalPromotionSaving = 0;
-        foreach (var rule in promotionRules)
-        {
-            totalPromotionSaving += rule.TotalPromotionSaving(counts);
-        }
-
-        return priceWithoutPromotion - totalPromotionSaving;
+            priceWithoutPromotion += counts.ElementAt(ite) * Prices.ElementAt(ite);
+        return priceWithoutPromotion;
     }
 
     public static void Add3PromotionRules(List<PromotionRule> promotionRules)

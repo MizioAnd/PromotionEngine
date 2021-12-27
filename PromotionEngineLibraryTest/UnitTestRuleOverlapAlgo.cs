@@ -204,14 +204,30 @@ public class UnitTestRuleOverlapAlgo
     }
 
     [Test]
-    public void OptimizeRulesAppliedAndMaxSavings_TwoOverlappingPromotionRules_HigherSavingsThanForMaxSavingsWithAppliedOverlappingPromotionRules()
+    public void TotalPriceUsingPromotionRules_MaxSavingsAlgoApplied_LowestTotatPriceForMaxSavingsAlgo()
     {
-        // Todo: Create algo that both satifies 0 overlapping promotion rules applied and max savings corresponding to accumulated
-        // savings from applied promotion rules
-
         // Arrange
-        // Act
-        // Assert
+        IEnumerable<string> stockKeepingUnits = new List<string>{"A", "A", "A", "A", "A", "A"};
+        var counts = stockKeepingUnits.CountSKU();
+        List<PromotionRule> promotionRules = new List<PromotionRule>();
+        Create2OverlappingPromotionRules(promotionRules);
+        // Create Cheapest Promotion rule
+        var nItems = 3;
+        var price = nItems*PromotionEngineLibrary.PriceA - PromotionEngineLibrary.Promotion3AsSaving/3*4;
+        var item_i = "A";
+        promotionRules.CreatePromotionNItemsForFixedPrice(nItems, item_i, price);
 
+        var permutationsRules = RuleOverlapAlgo.GetPermutations<PromotionRule>(promotionRules, promotionRules.Count());
+        List<int> maxSavings;
+        RuleOverlapAlgo.SavingsForAllPermutationsOfRules(counts, permutationsRules, out maxSavings);
+        IEnumerable<PromotionRule> rulePermMaxSaving = RuleOverlapAlgo.RulePermutationMaxSavings(permutationsRules, maxSavings);
+
+        // Act
+        var totalPrice = counts.TotalPriceUsingPromotionRules(promotionRules);
+        var totalPriceWithMaxSavingsPermutation = counts.TotalPriceUsingPromotionRules(rulePermMaxSaving);
+
+        // Assert
+        bool result = totalPriceWithMaxSavingsPermutation < totalPrice;
+        Assert.IsTrue(result, String.Format("total price with MaxSavings '{0}' < '{1}': true, but actual price '{1}': {2}", totalPriceWithMaxSavingsPermutation, totalPrice, result));
     }
 }

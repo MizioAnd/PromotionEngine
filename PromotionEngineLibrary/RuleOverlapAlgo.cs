@@ -155,13 +155,19 @@ public static class RuleOverlapAlgo
         List<int> maxSavings;
         SavingsForAllPermutationsOfRules(countsSKU, permutationsRules, out maxSavings);
 
-        var maxIdx = maxSavings.IndexOf(maxSavings.Max());
-        var rulePermMaxSaving = permutationsRules.ToList<IEnumerable<PromotionRule>>()[maxIdx];
+        IEnumerable<PromotionRule> rulePermMaxSaving = RulePermutationMaxSavings(permutationsRules, maxSavings);
         var rulesAppliedCountMaxSavings = countsSKU.OptimizeRulesApplied(rulePermMaxSaving);
 
         List<int> rulesAppliedCountMaxSavingsOrdered = RulesAppliedCountOrdered(promotionRules, rulePermMaxSaving, rulesAppliedCountMaxSavings);
 
         return rulesAppliedCountMaxSavingsOrdered;
+    }
+
+    public static IEnumerable<PromotionRule> RulePermutationMaxSavings(IEnumerable<IEnumerable<PromotionRule>> permutationsRules, List<int> maxSavings)
+    {
+        var maxIdx = maxSavings.IndexOf(maxSavings.Max());
+        var rulePermMaxSaving = permutationsRules.ToList<IEnumerable<PromotionRule>>()[maxIdx];
+        return rulePermMaxSaving;
     }
 
     private static List<int> RulesAppliedCountOrdered(IEnumerable<PromotionRule> promotionRulesOrdered, IEnumerable<PromotionRule> rulePermutationUnordered, IEnumerable<int> rulesAppliedCountMaxSavings)
@@ -177,7 +183,7 @@ public static class RuleOverlapAlgo
         return rulesAppliedCountOrdered;
     }
 
-    private static void SavingsForAllPermutationsOfRules(IEnumerable<int> countsSKU, IEnumerable<IEnumerable<PromotionRule>> permutationsRules, out List<int> maxSavings)
+    public static void SavingsForAllPermutationsOfRules(IEnumerable<int> countsSKU, IEnumerable<IEnumerable<PromotionRule>> permutationsRules, out List<int> maxSavings)
     {
         maxSavings = new List<int>(new int[permutationsRules.Count()]);
         var ite = 0;
@@ -191,8 +197,11 @@ public static class RuleOverlapAlgo
         }
     }
 
-    private static void SavingsOfRulePermuation(IEnumerable<int> countsSKU, out int savings, IEnumerable<PromotionRule> rulesPerm)
+    public static void SavingsOfRulePermuation(IEnumerable<int>? countsSKU, out int savings, IEnumerable<PromotionRule> rulesPerm)
     {
+        if (countsSKU == null)
+            throw new ArgumentNullException("Parameter needs to be set", nameof(countsSKU));
+
         var rulesAppliedCount = countsSKU.OptimizeRulesApplied(rulesPerm);
         savings = 0;
         var jte = 0;
